@@ -1,10 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar
-            flat
-            app
-            prominent
-        >
+        <v-app-bar flat app>
             <v-container >
                 <v-row dense no-gutters>
                     <div class="d-flex align-center">
@@ -34,7 +30,7 @@
                                 :href="platform.url"
                                 :color="hover ? platform.color : 'default'"
                             >
-                                <v-icon large v-text="platform.icon"></v-icon>
+                                <v-icon large>{{ platform.icon }}</v-icon>
                             </v-btn>
                         </v-hover>
                     </div>
@@ -80,3 +76,17 @@ export default class extends Vue {
     ];
 }
 </script>
+
+<style lang="scss" scoped>
+.v-application--wrap {
+    height: 100vh;
+    width: 100%;
+
+    .v-main {
+        height: 100%;
+        .container {
+            height: 100%;
+        }
+    }
+}
+</style>

@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 
+import VueCountdown from '@chenfengyuan/vue-countdown';
+Vue.component(VueCountdown.name, VueCountdown);
 Vue.config.productionTip = false
 
 new Vue({
