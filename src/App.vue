@@ -39,7 +39,7 @@
             </v-container>
         </v-app-bar>
 
-        <v-main>
+        <v-main v-if="!loading">
             <v-container>
                 <router-view />
             </v-container>
@@ -47,6 +47,11 @@
 
         <!-- Go to top -->
         <!-- <fab-top /> -->
+
+        <!-- Loader -->
+        <transition mode="out" name="fade-transition">
+            <Loader v-if="loading" />
+        </transition>
     </v-app>
 </template>
 
@@ -66,14 +71,27 @@ import FabTop from "@/components/FabTop.vue";
     },
 
     components: {
-        FabTop
+        FabTop,
+        Loader: () => import('@/components/Loader.vue')
     }
 })
 export default class extends Vue {
+    loading = true;
+
     social = [
         { name: 'Facebook', icon: 'mdi-facebook', color: 'blue darken-3', url: 'https://www.facebook.com/ReptexMX/' },
         { name: 'Instagram', icon: 'mdi-instagram', color: 'pink darken-1', url: 'https://www.instagram.com/reptex.mx/' },
     ];
+
+    created() {
+        window.addEventListener('load', this.hideLoader);
+    }
+
+    public hideLoader(): void {
+        setTimeout(() => {
+            this.loading = false;
+        }, 1000);
+    }
 }
 </script>
 
