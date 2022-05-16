@@ -6,20 +6,20 @@
             </path>
         </svg>
 
-        <div class="wave-text">
+        <div class="wave-wrapper">
             <v-container>
-                <div class="d-flex justify-space-between full">
-                    <div class="d-flex flex-column full">
+                <div class="d-flex flex-column flex-md-row justify-space-around justify-md-space-between wave-content">
+                    <div class="order-md-first d-flex flex-column wave-text">
                         <CountdownArea class="countdown-section" />
-                        <h1 class="text-h3 white--text" style="font-weight: 600 !important;">Nuestro sitio se lanzara pronto.</h1>
+                        <h1 :class="`${isNotDesktop() ? 'text-h4' : 'text-h3'} font-weight-bold white--text`">Nuestro sitio se lanzará pronto.</h1>
                         <p class="text-body-1 white--text">
                             Estamos trabajando en un sitio moderno y espectacular para ti<br>
-                            para conmemorar nuestro decimo noveno aniversario. <br>
+                            para conmemorar nuestro decimo noveno aniversario.<br>
                             Sigue en contacto con nosotros a través de nuestros medios de comunicación.
                         </p>
                     </div>
 
-                    <Anniversary />
+                    <Anniversary class="order-first" />
                 </div>
             </v-container>
         </div>
@@ -29,7 +29,10 @@
 
 <script lang="ts">
 import { MetaInfo } from "vue-meta";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+
+// Mixins
+import BreakpointMixin from "@/mixins/BreakpointMixin";
 
 @Component({
     metaInfo(): MetaInfo {
@@ -43,7 +46,7 @@ import { Component, Vue } from "vue-property-decorator";
         Anniversary: () => import('@/components/Anniversary.vue')
     }
 })
-export default class ComingSoon extends Vue {
+export default class ComingSoon extends Mixins(BreakpointMixin) {
 }
 
 </script>
@@ -57,24 +60,41 @@ export default class ComingSoon extends Vue {
         display: block;
     }
 
-    .wave-text {
+    .wave-wrapper {
         position: absolute;
         top: 0;
         width: 100%;
         height: 100%;
-
-        .full {
-            height: 100%;
-            gap: 3rem;
-        }
+        padding: 0 12px;
 
         .container {
             height: 100%;
-
-            .countdown-section {
-                flex-basis: 55%;
-            }
             
+            .wave-content {
+                height: 100%;
+
+                @include media-breakpoint-up(md) {
+                    gap: 3rem;
+                }
+
+                .wave-text {
+                    height: auto;
+                    gap: 2rem;
+
+                    @include media-breakpoint-up(md) {
+                        height: 100%;
+                        gap: 3rem;
+                        padding-left: 0;
+                    }
+
+                    .countdown-section {
+                        flex-basis: 30%;
+                        @include media-breakpoint-up(md) {
+                            flex-basis: 55%;
+                        }
+                    }
+                }
+            }
         }
     }
 }

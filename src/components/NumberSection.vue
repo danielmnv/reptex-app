@@ -1,10 +1,14 @@
 <template>
-    <div class="d-flex align-start">
-        <div class="d-flex align-start">
-            <span class="countdown-number shrink white--text">{{ section.number }}</span>
+    <div class="d-flex align-start mb-5 mb-md-0">
+        <div>
+            <span class="font-weight-bold shrink white--text countdown-number">
+                {{ section.number }}
+            </span>
         </div>
-        <div class="countdown-unit d-flex align-start">
-            <span class=" grey--text text--lighten-2">{{ section.unit }}</span>
+        <div class="countdown-unit">
+            <span class=" grey--text text--lighten-2">
+                {{ section.unit }}
+            </span>
         </div>
     </div>
 </template>
@@ -12,10 +16,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-interface DatePart {
-    number: any,
-    unit: string
-}
+// DTO
+import DatePart from "@/interfaces/DatePart.dto";
 
 @Component
 export default class NumberSection extends Vue {
@@ -26,8 +28,23 @@ export default class NumberSection extends Vue {
 <style lang="scss">
 .countdown-number {
     font-weight: 600;
-    font-size: 5.9rem;
-    line-height: 5.4rem;
+    font-size: 4.4rem;
+    line-height: 4rem;
+
+    @include media-breakpoint-only(sm) {
+        font-size: 7rem;
+        line-height: 6rem;
+    }
+
+    @include media-breakpoint-only(md) {
+        font-size: 4rem;
+        line-height: 3.9rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+        font-size: 5.9rem;
+        line-height: 5.4rem;
+    }
 }
 
 .countdown-unit > span {
