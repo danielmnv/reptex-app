@@ -1,8 +1,6 @@
 import Vue from "vue"
 import VueRouter, { RouteConfig } from "vue-router"
-import VueMeta, { } from "vue-meta";
-
-import ComingSoon from "../views/ComingSoon.vue"
+import VueMeta from "vue-meta";
 
 Vue.use(VueRouter)
 Vue.use(VueMeta)
@@ -11,7 +9,12 @@ const routes: Array<RouteConfig> = [
     {
         path: '/',
         name: 'home',
-        component: ComingSoon
+        component: () => import("../views/ComingSoon.vue")
+    },
+    {
+        path: '/mapa',
+        name: 'map',
+        component: () => import("../views/Map.vue")
     },
 ]
 
