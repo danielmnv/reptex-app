@@ -1,10 +1,12 @@
 <template>
     <div class="wave-area">
-        <svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 1440 310">
-            <path :fill="$vuetify.theme.currentTheme.primary" fill-opacity="1"
-                d="M0,0L48,21.3C96,43,192,85,288,90.7C384,96,480,64,576,53.3C672,43,768,53,864,96C960,139,1056,213,1152,224C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-            </path>
-        </svg>
+        <div class="wave-svg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path :fill="$vuetify.theme.currentTheme.background" fill-opacity="1"
+                    d="M0,224L34.3,240C68.6,256,137,288,206,261.3C274.3,235,343,149,411,96C480,43,549,21,617,26.7C685.7,32,754,64,823,112C891.4,160,960,224,1029,256C1097.1,288,1166,288,1234,266.7C1302.9,245,1371,203,1406,181.3L1440,160L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z">
+                </path>
+            </svg>
+        </div>
 
         <div class="wave-wrapper">
             <v-container>
@@ -56,8 +58,19 @@ export default class ComingSoon extends Mixins(BreakpointMixin) {
     height: 100%;
     position: relative;
 
-    svg {
-        display: block;
+    .wave-svg {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 0;
+
+        background: linear-gradient(-45deg, var(--v-primary-darken4), var(--v-secondary-base), var(--v-primary-base), cyan);
+        background-size: 400% 400%;
+        animation: gradient 8s ease infinite;
+
+        svg {
+            display: block;
+        }
     }
 
     .wave-wrapper {
@@ -97,5 +110,17 @@ export default class ComingSoon extends Mixins(BreakpointMixin) {
             }
         }
     }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 </style>

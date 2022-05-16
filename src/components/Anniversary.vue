@@ -1,12 +1,13 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-avatar 
-            class="elevation-10 hover cursor-pointer"
-            :size="size"
-            @click="startCongrats"
-        >
+    <div class="d-flex flex-column align-center justify-center">
+        <v-avatar class="elevation-10" :size="size">
             <img src="@/assets/anniversary-reptex.jpg" alt="REPTEX Anniversary">
         </v-avatar>
+        <v-btn class="mx-2 mt-4" fab dark small color="background" @click="toggleParty">
+            <v-icon dark color="primary">
+                mdi-party-popper
+            </v-icon>
+        </v-btn>
     </div>
 </template>
 
@@ -16,23 +17,31 @@ import BrreakpointMixin from "@/mixins/BreakpointMixin";
 
 @Component
 export default class Anniversary extends Mixins(BrreakpointMixin) {
-    animationTimeout = 0;
+    rain = false;
 
     mounted() {
-        this.startCongrats();
+        this.start();
     }
 
-    startCongrats() {
-        clearTimeout(this.animationTimeout);
-        this.animationTimeout = setTimeout(() => this.stopCongrats(), 8000);
-
+    start() {
+        this.rain = true;
         this.$confetti.start({
-            particlesPerFrame: 0.6,
+            particlesPerFrame: 0.8,
         });
     }
 
-    stopCongrats() {
+    stop() {
+        this.rain = false;
         this.$confetti.stop();
+    }
+
+    toggleParty() {
+        if (this.rain) {
+            this.stop();
+        }
+        else {
+            this.start();
+        }
     }
 
     get size(): number {
@@ -41,9 +50,3 @@ export default class Anniversary extends Mixins(BrreakpointMixin) {
 }
 
 </script>
-
-<style lang="scss">
-.cursor-pointer {
-    cursor: pointer;
-}
-</style>

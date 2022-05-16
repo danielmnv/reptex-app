@@ -17,11 +17,11 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 // DTO
-import DatePart from "@/interfaces/DatePart.dto";
+import DatePartDTO from "@/interfaces/DatePart.dto";
 
 @Component
 export default class NumberSection extends Vue {
-    @Prop({ required: true }) readonly section!: DatePart;
+    @Prop({ required: true }) readonly section!: DatePartDTO;
 }
 </script>
 

@@ -1,6 +1,6 @@
-interface DatePart {
+interface DatePartDTO {
     number: number,
     unit: string
 }
 
-export default DatePart;
+export default DatePartDTO;
