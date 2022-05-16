@@ -36,6 +36,6 @@ export default class ComingSoon extends Vue {
 }
 
 .countdown-section {
-    flex-basis: 65%;
+    flex-basis: 60%;
 }
 </style>
