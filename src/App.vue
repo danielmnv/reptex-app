@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar flat app>
+        <v-app-bar flat app color="background">
             <v-container >
                 <v-row dense no-gutters>
                     <div class="d-flex align-center">
@@ -40,16 +40,16 @@
         </v-app-bar>
 
         <v-main v-if="!loading">
-            <v-container>
+            <div class="container-wrap">
                 <router-view />
-            </v-container>
+            </div>
         </v-main>
 
         <!-- Go to top -->
         <!-- <fab-top /> -->
 
         <!-- Loader -->
-        <transition mode="out" name="fade-transition">
+        <transition mode="out-in" name="fade-transition">
             <Loader v-if="loading" />
         </transition>
     </v-app>
@@ -66,7 +66,7 @@ import FabTop from "@/components/FabTop.vue";
     metaInfo(): MetaInfo {
         return {
             title: "Coming Soon",
-            titleTemplate: '%s | Reptex'
+            titleTemplate: '%s | REPTEX'
         };
     },
 
@@ -102,7 +102,7 @@ export default class extends Vue {
 
     .v-main {
         height: 100%;
-        .container {
+        .container-wrap {
             height: 100%;
         }
     }

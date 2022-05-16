@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex align-start">
         <div class="d-flex align-start">
-            <span class="countdown-number shrink">{{ section.number }}</span>
+            <span class="countdown-number shrink white--text">{{ section.number }}</span>
         </div>
         <div class="countdown-unit d-flex align-start">
-            <span class=" grey--text text--darken-2">{{ section.unit }}</span>
+            <span class=" grey--text text--lighten-2">{{ section.unit }}</span>
         </div>
     </div>
 </template>
