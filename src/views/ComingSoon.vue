@@ -8,17 +8,22 @@
 
         <div class="wave-text">
             <v-container>
-                <div class="d-flex flex-column full">
-                    <CountdownArea class="countdown-section" />
-                    <h1 class="text-h3 white--text" style="font-weight: 600 !important;">Nuestro sitio se lanzara pronto.</h1>
-                    <p class="text-body-1 white--text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>
-                        Esse, quis illo tempore cupiditate minus non unde voluptates nulla itaque quas quaerat <br>
-                        voluptate quia impedit suscipit nisi, quae ex architecto nihil!
-                    </p>
+                <div class="d-flex justify-space-between full">
+                    <div class="d-flex flex-column full">
+                        <CountdownArea class="countdown-section" />
+                        <h1 class="text-h3 white--text" style="font-weight: 600 !important;">Nuestro sitio se lanzara pronto.</h1>
+                        <p class="text-body-1 white--text">
+                            Estamos trabajando en un sitio moderno y espectacular para ti<br>
+                            para conmemorar nuestro decimo noveno aniversario. <br>
+                            Sigue en contacto con nosotros a través de nuestros medios de comunicación.
+                        </p>
+                    </div>
+
+                    <Anniversary />
                 </div>
             </v-container>
         </div>
+
     </div>
 </template>
 
@@ -34,7 +39,8 @@ import { Component, Vue } from "vue-property-decorator";
     },
 
     components: {
-        CountdownArea: () => import('@/components/CountdownArea.vue')
+        CountdownArea: () => import('@/components/CountdownArea.vue'),
+        Anniversary: () => import('@/components/Anniversary.vue')
     }
 })
 export default class ComingSoon extends Vue {
@@ -57,17 +63,18 @@ export default class ComingSoon extends Vue {
         width: 100%;
         height: 100%;
 
+        .full {
+            height: 100%;
+            gap: 3rem;
+        }
+
         .container {
             height: 100%;
 
-            .full {
-                height: 100%;
-                gap: 3rem;
-
-                .countdown-section {
-                    flex-basis: 55%;
-                }
+            .countdown-section {
+                flex-basis: 55%;
             }
+            
         }
     }
 }
