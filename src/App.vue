@@ -17,22 +17,16 @@
                     <v-spacer></v-spacer>
     
                     <div class="d-flex align-center">
-                        <v-hover
+                        <v-btn
+                            icon
+                            target="_blank"
                             v-for="platform in social"
                             :key="platform.name"
-                            v-slot="{ hover }"
-                            open-delay="100"
-                            close-delay="100"
+                            :href="platform.url"
+                            :color="platform.color"
                         >
-                            <v-btn
-                                icon
-                                target="_blank"
-                                :href="platform.url"
-                                :color="hover ? platform.color : 'default'"
-                            >
-                                <v-icon large>{{ platform.icon }}</v-icon>
-                            </v-btn>
-                        </v-hover>
+                            <v-icon large>{{ platform.icon }}</v-icon>
+                        </v-btn>
                     </div>
 
                 </v-row>

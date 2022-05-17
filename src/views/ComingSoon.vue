@@ -13,12 +13,24 @@
                 <div class="d-flex flex-column flex-md-row justify-space-around justify-md-space-between wave-content">
                     <div class="order-md-first d-flex flex-column wave-text">
                         <CountdownArea class="countdown-section" />
-                        <h1 :class="`${isNotDesktop() ? 'text-h4' : 'text-h3'} font-weight-bold white--text`">Nuestro sitio se lanzará pronto.</h1>
-                        <p class="text-body-1 white--text">
+                        <h1 :class="`${isNotDesktop() ? 'text-h4' : 'text-h3'} font-weight-bold white--text`">¡Nuestro sitio se lanzará pronto!</h1>
+                        <div class="text-body-1 white--text">
                             Estamos trabajando en un sitio moderno y espectacular para ti<br>
                             para conmemorar nuestro decimo noveno aniversario.<br>
                             Sigue en contacto con nosotros a través de nuestros medios de comunicación.
-                        </p>
+                            <div class="d-flex align-center mt-4">
+                                <v-btn 
+                                    fab
+                                    small
+                                    color="green darken1"
+                                    href="https://wa.me/5214491469078/?text=Hola%2C%20revisando%20su%20sitio%20web%20encontr%C3%A9%20este%20n%C3%BAmero%20y%20quisiera%20preguntar%20sobre%20informaci%C3%B3n%20de..."
+                                >
+                                    <v-icon color="white">mdi-whatsapp</v-icon>
+                                </v-btn>
+                                <span class=" ml-4 text-h6 tel-link"><a href="tel:4491469078">449 146 90 78</a></span>
+                            </div>
+                            
+                        </div>
                     </div>
 
                     <Anniversary class="order-first" />
@@ -61,6 +73,7 @@ export default class ComingSoon extends Mixins(BreakpointMixin) {
     .wave-svg {
         position: absolute;
         height: 100%;
+        width: 100%;
         top: 0;
         left: 0;
 
@@ -109,6 +122,13 @@ export default class ComingSoon extends Mixins(BreakpointMixin) {
                 }
             }
         }
+    }
+}
+
+.tel-link {
+    a {
+        color: var(--v-background-base) !important;
+        text-decoration: none;
     }
 }
 
