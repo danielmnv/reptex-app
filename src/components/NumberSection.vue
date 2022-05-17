@@ -28,8 +28,8 @@ export default class NumberSection extends Vue {
 <style lang="scss">
 .countdown-number {
     font-weight: 600;
-    font-size: 4.4rem;
-    line-height: 4rem;
+    font-size: 3.7rem;
+    line-height: 3.4rem;
 
     @include media-breakpoint-only(sm) {
         font-size: 7rem;
