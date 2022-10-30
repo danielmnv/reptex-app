@@ -11,7 +11,7 @@ module.exports = {
     require("daisyui")
   ],
   daisyui: {
-    themes: ["cupcake", "garden", "emerald", "winter"],
+    themes: ["winter", "cupcake", "garden", "emerald"],
     prefix: "ds-"
   }
 }
