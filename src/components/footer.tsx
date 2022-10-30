@@ -6,15 +6,15 @@ export default function Footer({ }) {
         <footer className="ds-footer p-10 bg-neutral text-neutral-content">
             <div>
                 <img className="h-52 w-auto" src="/img/logo-extended.png" />
-                <p>Providing reliable sewing machines since 1992</p>
+                <p>Providing reliable sewing machines since 2003</p>
             </div>
             <div>
                 <span className="ds-footer-title">Social</span>
                 <div className="grid grid-flow-col gap-4">
-                    <a href="https://www.facebook.com/ReptexMX/" target="_blank">
+                    <a href="https://www.facebook.com/ReptexMX/" target="_blank" rel="noreferrer">
                         <FontAwesomeIcon icon={faFacebookF} size="xl" />
                     </a>
-                    <a href="https://www.instagram.com/reptex.mx" target="_blank">
+                    <a href="https://www.instagram.com/reptex.mx" target="_blank" rel="noreferrer">
                         <FontAwesomeIcon icon={faInstagram} size="xl" />
                     </a>
                 </div>
