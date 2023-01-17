@@ -28,3 +28,7 @@ a {
     background: black;
   }
 } */
+
+.main-wrapper {
+  @apply w-full h-full;
+}

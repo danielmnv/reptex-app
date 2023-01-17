@@ -1,14 +1,14 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from "next/head";
+import Image from "next/image";
 
 import React, { FC, useState } from "react";
 
 export default function Home() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const add = (factor = 1) => {
     setCount(count + factor);
-  }
+  };
 
   return (
     <div>
@@ -18,17 +18,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div className="ds-hero min-h-full py-10">
-          <div className="ds-hero-content text-center">
-              <div className="max-w-md">
-                  <h1 className="text-5xl font-bold">REPTEX</h1>
-                  <p className="py-6">NextJS + React + Tailwind + DaisyUI</p>
-                  <button className="ds-btn btn-primary" onClick={() => add()}>count is: { count }</button>
-              </div>
+      <div className="ds-hero min-h-full py-10">
+        <div className="ds-hero-content text-center">
+          <div className="max-w-md">
+            <h1 className="text-5xl font-bold">REPTEX</h1>
+            <p className="py-6">NextJS + React + Tailwind + DaisyUI</p>
+            <button className="ds-btn btn-primary" onClick={() => add()}>
+              count is: {count}
+            </button>
           </div>
         </div>
-      </main>
+      </div>
     </div>
-  )
+  );
 }
