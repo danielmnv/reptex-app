@@ -1,0 +1,52 @@
+.storeList {
+  @apply w-2/5 max-h-full p-3
+    flex flex-col justify-center gap-7
+    overflow-auto;
+
+  .storeBox {
+    @apply flex flex-col
+      border-2 border-[#f5f5f5] rounded-md
+      p-3
+      cursor-pointer;
+  }
+}
+
+.storeWindow {
+  @apply flex flex-col gap-y-2;
+
+  .windowRow {
+    @apply flex gap-x-2 items-center;
+
+    .icon {
+      @apply text-gray-700;
+    }
+    .primaryText {
+      @apply text-base font-extrabold;
+    }
+    .secondaryText {
+      @apply text-sm font-normal;
+    }
+    .callAction {
+      @apply text-primary underline;
+
+      a {
+        @apply outline-none hover:outline-none active:outline-none focus:outline-none;
+      }
+    }
+    .hourSection {
+      @apply flex flex-col gap-y-1;
+
+      .rangeWrapper {
+        @apply flex gap-x-3 justify-between text-sm font-normal;
+
+        .schedule {
+          @apply flex flex-col gap-y-1 items-end;
+        }
+      }
+    }
+  }
+
+  .routeBtn {
+    @apply ds-btn ds-btn-sm ds-btn-primary gap-x-2;
+  }
+}

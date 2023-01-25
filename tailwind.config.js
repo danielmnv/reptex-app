@@ -7,11 +7,23 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [
-    require("daisyui")
-  ],
+  plugins: [require("daisyui")],
   daisyui: {
-    themes: ["winter", "cupcake", "garden", "emerald"],
-    prefix: "ds-"
-  }
-}
+    themes: [
+      {
+        reptex: {
+          primary: "#0060bb",
+          secondary: "#ea581d",
+          accent: "#5c7f67",
+          neutral: "#5D5656",
+          "base-100": "#FAFAFA",
+          info: "#3ABFF8",
+          success: "#36D399",
+          warning: "#FBBD23",
+          error: "#F87272",
+        },
+      },
+    ],
+    prefix: "ds-",
+  },
+};
