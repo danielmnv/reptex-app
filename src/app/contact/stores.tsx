@@ -1,4 +1,6 @@
-import styles from "../styles/stores.module.css";
+"use client";
+
+import styles from "./styles.module.css";
 
 import React, { useCallback, useState } from "react";
 import {
@@ -13,79 +15,15 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { Store } from "../types/store";
+import { Store } from "../../lib/stores/dto";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import Image from "next/image";
 
-export default function Stores() {
-  const stores: Store[] = [
-    {
-      id: 2,
-      name: "REPTEX Matriz",
-      address:
-        "Av de la Convención de 1914 Poniente 112, Residencial del Valle I, 20080 Aguascalientes, Ags.",
-      phone: "449 146 9078",
-      hours: [
-        { range: "Lun - Vie", time: ["8:30 - 18:00"] },
-        { range: "Sabado", time: ["9:00 - 14:00"] },
-      ],
-      url: "https://www.google.com/maps/dir/?api=1&destination=REPTEX%20M%C3%A1quinas%20de%20Coser&destination_place_id=ChIJ4dQIVJvuKYQRWJ6xL-BzYog",
-      coords: { lat: 21.87547992379967, lng: -102.31237591207008 },
-    },
-    {
-      id: 1,
-      name: "REPTEX Centro",
-      address:
-        "José María Morelos y Pavón 409, Centro, 20000 Aguascalientes, Ags.",
-      phone: "449 975 6491",
-      hours: [
-        { range: "Lun - Vie", time: ["10:00 - 15:00", "15:30 - 18:00"] },
-        { range: "Sabado", time: ["10:00 - 14:00"] },
-      ],
-      url: "https://www.google.com/maps/dir/?api=1&destination=REPTEX%20M%C3%A1quinas%20de%20Coser&destination_place_id=ChIJsXsle2PuKYQRgwXrYjw9hXU",
-      coords: { lat: 21.884585196546155, lng: -102.29538159685822 },
-    },
-    {
-      id: 3,
-      name: "REPTEX Siglo XXI",
-      address:
-        "Av Siglo XXI Oriente #5223, Local 3, 20196 Aguascalientes, Ags.",
-      phone: "449 536 3650",
-      hours: [
-        { range: "Lun - Vie", time: ["9:00 - 14:00", "15:00 - 18:00"] },
-        { range: "Sabado", time: ["9:00 - 14:00"] },
-      ],
-      url: "https://www.google.com/maps/dir/?api=1&destination=REPTEX%20M%C3%A1quinas%20de%20Coser&destination_place_id=ChIJj8bRZwzxKYQRIGBc1eL7pDg",
-      coords: { lat: 21.885929549689468, lng: -102.25085171005303 },
-    },
-    {
-      id: 4,
-      name: "REPTEX Encarnacion",
-      address:
-        "Lagos de Moreno-Encarnación de Díaz, 47270 Encarnación de Díaz, Jal.",
-      phone: "475 953 3165",
-      hours: [
-        { range: "Lun - Vie", time: ["9:00 - 18:00"] },
-        { range: "Sabado", time: ["9:00 - 14:00"] },
-      ],
-      url: "https://www.google.com/maps/dir/?api=1&destination=REPTEX%20M%C3%A1quinas%20de%20Coser&destination_place_id=ChIJ5QOHLr2EKYQRw0UuVFIRdEE",
-      coords: { lat: 21.51276222660816, lng: -102.23605538324759 },
-    },
-    {
-      id: 5,
-      name: "REPTEX Villa",
-      address: "C. Morelos 102, Centro, 47250 Villa Hidalgo, Jal.",
-      phone: "495 968 2419",
-      hours: [{ range: "Lun - Vie", time: ["10:00 - 17:00"] }],
-      url: "https://www.google.com/maps/dir/?api=1&destination=REPTEX%20M%C3%A1quinas%20de%20Coser&destination_place_id=ChIJ7aEPNJC5KYQRTI7PjCuHzfc",
-      coords: { lat: 21.676609425867426, lng: -102.58922294081896 },
-    },
-  ];
+export default function Stores({ stores }: { stores: Store[] }) {
+  const [activeMarker, setActiveMarker] = useState<string>(null);
 
-  const [activeMarker, setActiveMarker] = useState<number>(null);
-
-  const handleActiveMarker = (marker: number | null) => {
+  const handleActiveMarker = (marker: string | null) => {
     if (marker === activeMarker) {
       return;
     }
@@ -122,8 +60,8 @@ function Map({
   handleActiveMarker,
 }: {
   stores: Store[];
-  activeMarker: number | null;
-  handleActiveMarker: (marker: number | null) => void;
+  activeMarker: string | null;
+  handleActiveMarker: (marker: string | null) => void;
 }) {
   const options: google.maps.MapOptions = {
     disableDefaultUI: true,
@@ -200,7 +138,7 @@ function Map({
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyBdSE5Eg1DkqnR4CPUPF4vtNoEXkjyYgSM",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_G_MAP,
   });
 
   const onLoad = useCallback(
