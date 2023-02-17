@@ -28,8 +28,8 @@ export default function Navbar({ children }) {
             <Link href="/">
               <div className="h-12 w-12 relative">
                 <Image
-                  layout="fill"
-                  objectFit="contain"
+                  width={200}
+                  height={200}
                   src="/img/logo.png"
                   alt="REPTEX"
                 />
