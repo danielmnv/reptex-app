@@ -6,22 +6,28 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        sticky: "sticky 0.35s ease-out",
+      },
+      keyframes: {
+        sticky: {
+          from: { transform: "translateY(-100%)" },
+          to: { transform: "translateY(0)" },
+        },
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
     themes: [
       {
         reptex: {
+          ...require("daisyui/src/colors/themes")["[data-theme=cmyk]"],
           primary: "#0060bb",
           secondary: "#ea581d",
           accent: "#5c7f67",
           neutral: "#5D5656",
-          "base-100": "#FAFAFA",
-          info: "#3ABFF8",
-          success: "#36D399",
-          warning: "#FBBD23",
-          error: "#F87272",
         },
       },
     ],

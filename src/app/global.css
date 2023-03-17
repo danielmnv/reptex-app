@@ -29,6 +29,34 @@ a {
   }
 } */
 
+@layer components {
+  .rp-navbar {
+    @apply ds-navbar;
+
+    .image {
+      @apply h-12 w-12 lg:h-24 lg:w-24 relative;
+    }
+
+    &.is-sticky {
+      @apply fixed top-0 left-0
+        w-full py-0 z-50
+        bg-white
+        border-b-[1px] border-b-slate-200
+        animate-sticky;
+
+      .image {
+        @apply h-12 w-12;
+      }
+    }
+  }
+
+  .social-media-link {
+    @apply ds-btn ds-btn-md ds-btn-circle ds-btn-outline
+      text-neutral text-opacity-25 border-neutral border-opacity-25
+      hover:!ds-btn-primary;
+  }
+}
+
 .main-wrapper {
   @apply w-full h-full;
 }
