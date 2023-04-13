@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React, { use } from "react";
 import { loadStores } from "../../lib/stores";
 
