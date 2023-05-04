@@ -2,12 +2,13 @@
 
 import styles from "./styles.module.css";
 
-import React, { useCallback, useState } from "react";
 import {
   faPhone,
   faMapPin,
   faClockFour,
-  faUpRightFromSquare,
+  faDiamondTurnRight,
+  faShop,
+  faClose,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   GoogleMap,
@@ -15,62 +16,158 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { Store } from "../../lib/stores/dto";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  useTransition,
+  useSpring,
+  animated,
+  config as springConfig,
+} from "@react-spring/web";
+import { Store } from "../../lib/stores/dto";
 import classNames from "classnames";
 import Image from "next/image";
 
-export default function Stores({ stores }: { stores: Store[] }) {
-  const [activeMarker, setActiveMarker] = useState<string>(null);
+const Stores = ({ stores }: { stores: Store[] }) => {
+  const [keyword, setKeyword] = useState<string>("");
+  const [filteredList, setFilteredList] = useState<Store[]>(stores);
+  const [selectedStore, setSelectedStore] = useState<Store>();
+  const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
 
-  const handleActiveMarker = (marker: string | null) => {
-    if (marker === activeMarker) {
+  const transitions = useTransition(filteredList, {
+    from: { opacity: 0, transform: "translate3d(0,100%,0)" },
+    enter: { opacity: 1, transform: "translate3d(0,0%,0)" },
+    leave: { opacity: 0, transform: "translate3d(0,100%,0)" },
+    config: {
+      ...springConfig.gentle,
+      clamp: true,
+    },
+  });
+
+  const handleActiveMarker = (store?: Store) => {
+    if (store?.id === selectedStore?.id) {
       return;
     }
-    setActiveMarker(marker);
+    setSelectedStore(store);
   };
 
+  useEffect(() => {
+    const formattedKeyword = keyword.toLocaleLowerCase();
+    const filteredStores = stores.filter(
+      (s) =>
+        s.name.toLocaleLowerCase().includes(formattedKeyword) ||
+        s.address.toLocaleLowerCase().includes(formattedKeyword) ||
+        s.phone.toLocaleLowerCase().includes(formattedKeyword)
+    );
+
+    if (
+      !!selectedStore &&
+      !filteredStores.some((s) => s.id === selectedStore.id)
+    ) {
+      setSelectedStore(undefined);
+    }
+
+    setFilteredList(filteredStores);
+  }, [keyword]);
+
   return (
-    <div className="w-full h-full flex">
-      <div className={styles.storeList}>
-        {stores.map((store) => (
-          <div
-            key={store.id}
-            className={styles.storeBox}
-            onClick={() => handleActiveMarker(store.id)}
-          >
-            <span>{store.name}</span>
-            <span>{store.address}</span>
-            <span>{store.phone}</span>
+    <div className="relative">
+      {isMapLoaded && (
+        <>
+          <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-5 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
+            <label className="ds-input-group">
+              <input
+                type="text"
+                placeholder="Busca una tienda"
+                className="ds-input ds-input-sm md:ds-input-md ds-input-bordered"
+                value={keyword}
+                onChange={({ target }) => setKeyword(target.value)}
+              />
+              <button
+                className="ds-btn ds-btn-sm md:ds-btn-md ds-btn-primary bg-opacity-95"
+                onClick={() => !!keyword && setKeyword("")}
+              >
+                <FontAwesomeIcon
+                  icon={!!keyword ? faClose : faShop}
+                  className="text-white"
+                />
+              </button>
+            </label>
           </div>
-        ))}
-      </div>
+
+          <div className={styles.storeListWrapper}>
+            <div className={styles.storeList}>
+              {transitions((style, store) => (
+                <animated.div
+                  key={store.id}
+                  style={style}
+                  className={classNames(styles.storeBox, {
+                    [styles.active]: store.id === selectedStore?.id,
+                  })}
+                  onClick={() => handleActiveMarker(store)}
+                >
+                  <h2 className="text-sm md:text-base font-extrabold">
+                    {store.name}
+                  </h2>
+                  <p className="text-sm font-normal flex-grow">
+                    {store.address}
+                  </p>
+                  <div className="flex justify-between items-center ">
+                    <a
+                      href={`tel:${store.phone}`}
+                      className={styles.arrowLink}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FontAwesomeIcon icon={faPhone} />
+                      {store.phone}
+                    </a>
+
+                    <a
+                      href={store.url}
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-accent text-base md:text-2xl"
+                    >
+                      <FontAwesomeIcon icon={faDiamondTurnRight} />
+                    </a>
+                  </div>
+                </animated.div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
       <Map
-        stores={stores}
-        activeMarker={activeMarker}
+        stores={filteredList}
+        selectedStore={selectedStore}
         handleActiveMarker={handleActiveMarker}
+        onMapLoad={setIsMapLoaded}
       />
     </div>
   );
-}
+};
 
-function Map({
+const Map = ({
   stores,
-  activeMarker,
+  selectedStore,
   handleActiveMarker,
+  onMapLoad,
 }: {
   stores: Store[];
-  activeMarker: string | null;
-  handleActiveMarker: (marker: string | null) => void;
-}) {
+  selectedStore?: Pick<Store, "id" | "coords">;
+  handleActiveMarker: (store?: Store) => void;
+  onMapLoad: (v: boolean) => void;
+}) => {
   const options: google.maps.MapOptions = {
     disableDefaultUI: true,
-    streetViewControl: true,
-    zoomControl: true,
+    // streetViewControl: true,
+    // zoomControl: true,
     styles: [
       /** ALL */
       { elementType: "labels.text.stroke", stylers: [{ visibility: "off" }] },
-      { elementType: "geometry", stylers: [{ color: "#f5f8f8" }] },
+      { elementType: "geometry", stylers: [{ color: "#FFCCBC" }] },
       { elementType: "labels.text.fill", stylers: [{ color: "#000000" }] },
       /** ADMINISTRATIVE */
       // Country
@@ -117,7 +214,7 @@ function Map({
       {
         featureType: "road",
         elementType: "geometry",
-        stylers: [{ color: "#FF7043" }],
+        stylers: [{ color: "#FF8A65" }],
       },
       /** POI */
       {
@@ -138,7 +235,7 @@ function Map({
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_G_MAP,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_G_MAP!,
   });
 
   const onLoad = useCallback(
@@ -150,91 +247,112 @@ function Map({
     [stores]
   );
 
-  return isLoaded ? (
-    <GoogleMap
-      onLoad={onLoad}
-      options={options}
-      onClick={() => handleActiveMarker(null)}
-      mapContainerStyle={{ width: "100%", height: "100%" }}
-    >
-      {stores.map(({ id, name, address, phone, hours, url, coords }) => (
-        <Marker
-          key={id}
-          position={coords}
-          onClick={() => handleActiveMarker(id)}
-          icon={{
-            url: "https://freesvg.org/img/ts-map-pin.png",
-            scaledSize: new google.maps.Size(41, 42),
+  useEffect(() => {
+    onMapLoad(isLoaded);
+  }, [isLoaded]);
+
+  return (
+    <>
+      {isLoaded ? (
+        <GoogleMap
+          onLoad={onLoad}
+          options={options}
+          center={selectedStore?.coords}
+          onClick={() => handleActiveMarker(undefined)}
+          mapContainerStyle={{
+            width: "100%",
+            height: "calc(100vh - 112px)",
+            minHeight: "700px",
           }}
         >
-          {activeMarker === id && (
-            <InfoWindow onCloseClick={() => handleActiveMarker(null)}>
-              <div className={styles.storeWindow}>
-                <div className={styles.windowRow}>
-                  <div className="h-8 w-8 relative">
-                    <Image
-                      layout="fill"
-                      objectFit="contain"
-                      src="/img/logo.png"
-                      alt="REPTEX"
-                    />
-                  </div>
-                  <h1 className={styles.primaryText}>{name}</h1>
-                </div>
-
-                <div className={styles.windowRow}>
-                  <FontAwesomeIcon icon={faMapPin} className={styles.icon} />
-                  <span
-                    className={classNames(styles.secondaryText, "max-w-xs")}
-                  >
-                    {address}
-                  </span>
-                </div>
-
-                <div className={styles.windowRow}>
-                  <FontAwesomeIcon icon={faPhone} className={styles.icon} />
-                  <span
-                    className={classNames(
-                      styles.secondaryText,
-                      styles.callAction
-                    )}
-                  >
-                    <a href={`tel:${phone}`}>{phone}</a>
-                  </span>
-                </div>
-
-                <div className={styles.windowRow}>
-                  <FontAwesomeIcon icon={faClockFour} className={styles.icon} />
-                  <div className={styles.hourSection}>
-                    {hours.map(({ range, time }, index) => (
-                      <div key={index} className={styles.rangeWrapper}>
-                        <span>{range}</span>
-                        <div className={styles.schedule}>
-                          {time.map((t, i) => (
-                            <span key={i}>{t}</span>
-                          ))}
-                        </div>
+          {stores.map((s) => (
+            <Marker
+              key={s.id}
+              position={s.coords}
+              onClick={() => handleActiveMarker(s)}
+              icon={{
+                url: "https://freesvg.org/img/ts-map-pin.png",
+                scaledSize: new google.maps.Size(41, 42),
+              }}
+            >
+              {selectedStore?.id === s.id && (
+                <InfoWindow onCloseClick={() => handleActiveMarker(undefined)}>
+                  <div className={styles.storeWindow}>
+                    <div className={styles.windowRow}>
+                      <div className="h-8 w-8 relative">
+                        <Image
+                          layout="fill"
+                          objectFit="contain"
+                          src="/img/logo.png"
+                          alt="REPTEX"
+                        />
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <p className={styles.primaryText}>{s.name}</p>
+                    </div>
 
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.routeBtn}
-                >
-                  Direcciones
-                  <FontAwesomeIcon icon={faUpRightFromSquare} />
-                </a>
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
-      ))}
-    </GoogleMap>
-  ) : (
-    <></>
+                    <div className={styles.windowRow}>
+                      <FontAwesomeIcon
+                        icon={faMapPin}
+                        className={styles.icon}
+                      />
+                      <span
+                        className={classNames(styles.secondaryText, "max-w-xs")}
+                      >
+                        {s.address}
+                      </span>
+                    </div>
+
+                    <div className={styles.windowRow}>
+                      <FontAwesomeIcon icon={faPhone} className={styles.icon} />
+                      <span
+                        className={classNames(
+                          styles.secondaryText,
+                          styles.callAction
+                        )}
+                      >
+                        <a href={`tel:${s.phone}`}>{s.phone}</a>
+                      </span>
+                    </div>
+
+                    <div className={styles.windowRow}>
+                      <FontAwesomeIcon
+                        icon={faClockFour}
+                        className={styles.icon}
+                      />
+                      <div className={styles.hourSection}>
+                        {s.hours.map(({ range, time }, index) => (
+                          <div key={index} className={styles.rangeWrapper}>
+                            <span>{range}</span>
+                            <div className={styles.schedule}>
+                              {time.map((t, i) => (
+                                <span key={i}>{t}</span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.routeBtn}
+                    >
+                      Direcciones
+                      <FontAwesomeIcon icon={faDiamondTurnRight} />
+                    </a>
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
+          ))}
+        </GoogleMap>
+      ) : (
+        <div className="min-h-[calc(100vh_-_112px)] bg-transparent"></div>
+      )}
+    </>
   );
-}
+};
+
+export default Stores;

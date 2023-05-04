@@ -19,7 +19,7 @@ if (process.env.IS_DEV) {
   connectFirestoreEmulator(
     db,
     "localhost",
-    parseInt(process.env.DEV_EMULATOR) || 8090
+    process.env.DEV_EMULATOR ? parseInt(process.env.DEV_EMULATOR) : 8090
   );
 }
 
