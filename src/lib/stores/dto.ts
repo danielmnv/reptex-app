@@ -32,6 +32,7 @@ export type StoreRow = {
   }[];
   url: string;
   coords: GeoPoint;
+  main?: boolean;
 };
 
 export type Store = {
@@ -42,6 +43,7 @@ export type Store = {
   hours: StoreHours[];
   url: string;
   coords: StoreCoords;
+  main?: boolean;
 };
 
 export type StoreCoords = {

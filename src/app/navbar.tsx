@@ -15,20 +15,21 @@ import classNames from "classnames";
 import { HeaderLink } from "../lib/navigation/dto";
 
 export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
-  const ref = useRef<HTMLDivElement>();
-  const [height, setHeight] = useState<number>();
+  const ref = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>(0);
   const [isScrolled, setScrolled] = useState<boolean>();
 
   // Callbacks
   const isSticky = () => {
-    const offset = ref.current.offsetTop + ref.current.clientHeight;
+    const offset =
+      (ref.current?.offsetTop || 0) + (ref.current?.clientHeight || 0);
     setScrolled(window.scrollY >= offset);
   };
 
   // Hooks
   useEffect(() => {
     // Set initial height of the navbar
-    setHeight(ref.current.clientHeight);
+    setHeight(ref.current?.clientHeight || 0);
 
     // First call to match inital render
     isSticky();
@@ -61,7 +62,7 @@ export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
           </div>
 
           {/* Logo */}
-          <Link href="/" className="flex-1 px-2 mx-2">
+          <Link href="/" className="flex px-2 mx-2">
             <div className="image">
               <Image
                 width={100}
@@ -76,7 +77,7 @@ export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
         {/* Desktop menu */}
         <div className="ds-navbar-center hidden lg:flex">
           <Navigation
-            className="ds-menu ds-menu-horizontal"
+            className="ds-menu ds-menu-horizontal z-[100]"
             links={navigation}
             isMobile={false}
           />
@@ -131,7 +132,7 @@ const MenuLink = ({
   link: HeaderLink;
   isMobile: boolean;
 }) => {
-  const hasChildren = link.childs?.length > 0;
+  const hasChildren = (link.childs?.length || 0) > 0;
 
   return (
     <li>
@@ -155,7 +156,7 @@ const MenuLink = ({
           )}
         </span>
       )}
-      {hasChildren && (
+      {link.childs?.length && (
         <Navigation
           className="p-2 bg-base-100 md:shadow-md"
           links={link.childs}
