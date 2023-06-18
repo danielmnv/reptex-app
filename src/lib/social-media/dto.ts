@@ -14,7 +14,13 @@ export const SocialMediaConverter = {
   },
 };
 
-export type SocialMediaType = "Facebook" | "Instagram";
+export type SocialMediaType =
+  | "Facebook"
+  | "Instagram"
+  | "TikTok"
+  | "Mercado Libre"
+  | "WhatsApp"
+  | "Messenger";
 
 export type SocialMediaRow = {
   label: SocialMediaType;

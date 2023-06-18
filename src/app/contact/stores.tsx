@@ -7,9 +7,9 @@ import {
   faMapPin,
   faClockFour,
   faDiamondTurnRight,
-  faShop,
+  faStore,
   faClose,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/pro-duotone-svg-icons";
 import {
   GoogleMap,
   InfoWindow,
@@ -17,7 +17,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   useTransition,
   useSpring,
@@ -27,12 +27,23 @@ import {
 import { Store } from "../../lib/stores/dto";
 import classNames from "classnames";
 import Image from "next/image";
+import { useScroll, useTransform, motion } from "framer-motion";
 
 const Stores = ({ stores }: { stores: Store[] }) => {
   const [keyword, setKeyword] = useState<string>("");
   const [filteredList, setFilteredList] = useState<Store[]>(stores);
   const [selectedStore, setSelectedStore] = useState<Store>();
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
+
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["end start", "start start"],
+  });
+
+  const position = useTransform(scrollYProgress, (pos) =>
+    pos === 1 ? "relative" : "fixed"
+  );
 
   const transitions = useTransition(filteredList, {
     from: { opacity: 0, transform: "translate3d(0,100%,0)" },
@@ -71,80 +82,85 @@ const Stores = ({ stores }: { stores: Store[] }) => {
   }, [keyword]);
 
   return (
-    <div className="relative">
-      {isMapLoaded && (
-        <>
-          <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-5 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
-            <label className="ds-input-group">
-              <input
-                type="text"
-                placeholder="Busca una tienda"
-                className="ds-input ds-input-sm md:ds-input-md ds-input-bordered"
-                value={keyword}
-                onChange={({ target }) => setKeyword(target.value)}
-              />
-              <button
-                className="ds-btn ds-btn-sm md:ds-btn-md ds-btn-primary bg-opacity-95"
-                onClick={() => !!keyword && setKeyword("")}
-              >
-                <FontAwesomeIcon
-                  icon={!!keyword ? faClose : faShop}
-                  className="text-white"
+    <div ref={ref} className="relative h-[130vh]">
+      <motion.div
+        className="w-full"
+        style={{ position, top: 0, overflow: "visible" }}
+      >
+        {isMapLoaded && (
+          <>
+            <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-32 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
+              <label className="ds-input-group">
+                <input
+                  type="text"
+                  placeholder="Busca una tienda"
+                  className="ds-input ds-input-sm md:ds-input-md ds-input-bordered"
+                  value={keyword}
+                  onChange={({ target }) => setKeyword(target.value)}
                 />
-              </button>
-            </label>
-          </div>
-
-          <div className={styles.storeListWrapper}>
-            <div className={styles.storeList}>
-              {transitions((style, store) => (
-                <animated.div
-                  key={store.id}
-                  style={style}
-                  className={classNames(styles.storeBox, {
-                    [styles.active]: store.id === selectedStore?.id,
-                  })}
-                  onClick={() => handleActiveMarker(store)}
+                <button
+                  className="ds-btn ds-btn-sm md:ds-btn-md ds-btn-primary bg-opacity-95"
+                  onClick={() => !!keyword && setKeyword("")}
                 >
-                  <h2 className="text-sm md:text-base font-extrabold">
-                    {store.name}
-                  </h2>
-                  <p className="text-sm font-normal flex-grow">
-                    {store.address}
-                  </p>
-                  <div className="flex justify-between items-center ">
-                    <a
-                      href={`tel:${store.phone}`}
-                      className={styles.arrowLink}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <FontAwesomeIcon icon={faPhone} />
-                      {store.phone}
-                    </a>
-
-                    <a
-                      href={store.url}
-                      onClick={(e) => e.stopPropagation()}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-accent text-base md:text-2xl"
-                    >
-                      <FontAwesomeIcon icon={faDiamondTurnRight} />
-                    </a>
-                  </div>
-                </animated.div>
-              ))}
+                  <FontAwesomeIcon
+                    icon={!!keyword ? faClose : faStore}
+                    className="text-white"
+                  />
+                </button>
+              </label>
             </div>
-          </div>
-        </>
-      )}
 
-      <Map
-        stores={filteredList}
-        selectedStore={selectedStore}
-        handleActiveMarker={handleActiveMarker}
-        onMapLoad={setIsMapLoaded}
-      />
+            <div className={styles.storeListWrapper}>
+              <div className={styles.storeList}>
+                {transitions((style, store) => (
+                  <animated.div
+                    key={store.id}
+                    style={style}
+                    className={classNames(styles.storeBox, {
+                      [styles.active]: store.id === selectedStore?.id,
+                    })}
+                    onClick={() => handleActiveMarker(store)}
+                  >
+                    <h2 className="text-sm md:text-base font-extrabold">
+                      {store.name}
+                    </h2>
+                    <p className="text-sm font-normal flex-grow">
+                      {store.address}
+                    </p>
+                    <div className="flex justify-between items-center ">
+                      <a
+                        href={`tel:${store.phone}`}
+                        className={styles.arrowLink}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <FontAwesomeIcon icon={faPhone} />
+                        {store.phone}
+                      </a>
+
+                      <a
+                        href={store.url}
+                        onClick={(e) => e.stopPropagation()}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-secondary-focus text-base md:text-2xl"
+                      >
+                        <FontAwesomeIcon icon={faDiamondTurnRight} />
+                      </a>
+                    </div>
+                  </animated.div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        <Map
+          stores={filteredList}
+          selectedStore={selectedStore}
+          handleActiveMarker={handleActiveMarker}
+          onMapLoad={setIsMapLoaded}
+        />
+      </motion.div>
     </div>
   );
 };
@@ -261,13 +277,12 @@ const Map = ({
           onClick={() => handleActiveMarker(undefined)}
           mapContainerStyle={{
             width: "100%",
-            height: "calc(100vh - 112px)",
-            minHeight: "700px",
+            height: "100vh",
           }}
         >
           {stores.map((s) => (
             <Marker
-              key={s.id}
+              key={`google-map-store-${s.id}`}
               position={s.coords}
               onClick={() => handleActiveMarker(s)}
               icon={{
@@ -321,11 +336,18 @@ const Map = ({
                       />
                       <div className={styles.hourSection}>
                         {s.hours.map(({ range, time }, index) => (
-                          <div key={index} className={styles.rangeWrapper}>
+                          <div
+                            key={`store-${s.id}-range-${index}`}
+                            className={styles.rangeWrapper}
+                          >
                             <span>{range}</span>
                             <div className={styles.schedule}>
                               {time.map((t, i) => (
-                                <span key={i}>{t}</span>
+                                <span
+                                  key={`store-${s.id}-range-${index}-time-${i}`}
+                                >
+                                  {t}
+                                </span>
                               ))}
                             </div>
                           </div>

@@ -1,0 +1,66 @@
+.chat-wrapper {
+  @apply fixed top-0 right-0 sm:top-auto sm:bottom-20 sm:right-3 md:bottom-28 md:right-12
+        hidden flex-col w-full h-full sm:w-80 sm:min-h-[500px] sm:max-h-[500px]
+        bg-primary-focus sm:rounded-xl shadow-xl
+        overflow-hidden z-[149];
+
+  .chat-header {
+    @apply p-2;
+
+    .header-elements {
+      @apply flex justify-between items-center text-base-100;
+
+      .title {
+        @apply text-lg pl-2;
+      }
+
+      .button {
+        @apply ds-btn-circle ds-btn-md ds-btn-ghost;
+      }
+    }
+  }
+
+  .chat-body {
+    @apply bg-base-100 rounded-t-xl flex-grow overflow-y-auto overflow-x-hidden pt-2 relative flex flex-col;
+
+    .chat-ia-selector {
+      @apply mt-2 flex flex-col gap-2;
+
+      .selector-options {
+        @apply w-full bg-base-100 rounded-xl p-3 cursor-pointer text-primary hover:bg-primary hover:text-base-100 transition-colors;
+
+        > span {
+          @apply font-semibold;
+        }
+      }
+    }
+
+    .user-input-wrapper {
+      @apply flex-grow flex items-end;
+
+      .user-input-content {
+        @apply flex justify-between items-center gap-4 w-full;
+
+        .input-textarea {
+          @aply flex-grow;
+
+          > textarea {
+            @apply w-full ds-textarea;
+          }
+        }
+
+        .input-submit {
+          @apply ds-btn ds-btn-circle ds-btn-sm ds-btn-link mr-4;
+        }
+      }
+    }
+  }
+}
+
+.fab-button-wrapper {
+  @apply fixed bottom-3 right-3 md:bottom-8 md:right-12 z-[148];
+
+  .fab-button {
+    @apply bg-primary w-16 h-16 text-white rounded-full shadow-lg drop-shadow-2xl;
+  }
+}
