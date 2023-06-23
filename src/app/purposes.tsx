@@ -50,7 +50,7 @@ const PurposeCard = ({ title, desc }: { title: string; desc: string }) => {
         opacity: isInView ? 1 : 0,
         transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
       }}
-      className="w-5/6 md:w-full h-full p-8 flex flex-col items-center gap-y-3 ds-card bg-[#ffffff]"
+      className="w-5/6 md:w-full self-stretch p-8 flex flex-col items-center gap-y-3 ds-card bg-[#ffffff]"
     >
       <FontAwesomeIcon icon={faLaptopCode} className="text-primary" size="2x" />
       <h3 className="text-lg text-center font-semibold">{title}</h3>
