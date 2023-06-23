@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+} */
+
+@layer components {
+  .section {
+    @apply py-20 my-16;
+  }
+
+  .text-wrapper {
+    @apply px-6 lg:px-48
+      flex flex-col gap-y-8;
+  }
+
+  .icon {
+    position: relative;
+    display: inline-block;
+    height: auto;
+    fill: theme(colors.neutral-content);
+    @apply transition-colors;
+
+    &:hover {
+      fill: theme(colors.neutral);
+    }
+
+    &.small {
+      width: 40px !important;
+    }
+
+    &.medium {
+      width: 70px !important;
+    }
+
+    &.large {
+      width: 120px !important;
+    }
+
+    &.xlarge {
+      width: 160px !important;
+    }
+  }
+
+  @variants responsive {
+    .masonry {
+      column-count: 1;
+    }
+    .masonry-md {
+      column-count: 2;
+    }
+    .masonry-lg {
+      column-count: 3;
+    }
+    .break-inside {
+      break-inside: avoid;
+    }
+  }
+}

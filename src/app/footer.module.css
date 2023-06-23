@@ -1,0 +1,3 @@
+.socialMediaLink {
+  @apply text-[#748e9c] transition-all hover:text-primary-focus hover:scale-125;
+}

@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { loadStores } from "../../lib/stores";
 
 import Stores from "./stores";
@@ -11,8 +11,8 @@ export const metadata = {
   },
 };
 
-export default function Page() {
-  const stores = use(loadStores());
+export default async function Page() {
+  const stores = await loadStores();
 
   return <Stores stores={stores} />;
 }

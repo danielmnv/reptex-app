@@ -3,20 +3,27 @@
 import {
   faArrowRightLong,
   faBars,
-  faChevronDown,
-  faChevronRight,
   faPhone,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState, HTMLAttributes } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  HTMLAttributes,
+  PropsWithChildren,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import classNames from "classnames";
+import styles from "./navbar.module.css";
 import { HeaderLink } from "../lib/navigation/dto";
 
-export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
+export const Navbar = ({
+  navigation,
+  children,
+}: PropsWithChildren<{ navigation: HeaderLink[] }>) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>(0);
   const [isScrolled, setScrolled] = useState<boolean>();
 
   // Callbacks
@@ -28,9 +35,6 @@ export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
 
   // Hooks
   useEffect(() => {
-    // Set initial height of the navbar
-    setHeight(ref.current?.clientHeight || 0);
-
     // First call to match inital render
     isSticky();
 
@@ -43,67 +47,78 @@ export const Navbar = ({ navigation }: { navigation: HeaderLink[] }) => {
 
   return (
     <>
-      <header
-        ref={ref}
-        className={classNames("rp-navbar", { "is-sticky": isScrolled })}
-      >
-        <div className="ds-navbar-start">
-          {/* Mobile menu */}
-          <div className="ds-dropdown">
-            <label tabIndex={0} className="ds-btn ds-btn-ghost lg:hidden">
-              <FontAwesomeIcon icon={faBars} size="xl" />
-            </label>
-            <Navigation
-              tabIndex={0}
-              className="ds-menu ds-menu-compact ds-dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              links={navigation}
-              isMobile={true}
-            />
-          </div>
-
-          {/* Logo */}
-          <Link href="/" className="flex px-2 mx-2">
-            <div className="image">
-              <Image
-                width={100}
-                height={100}
-                src="/img/logo.png"
-                alt="REPTEX"
+      <header className="ds-drawer">
+        <input id="my-drawer-3" type="checkbox" className="ds-drawer-toggle" />
+        <div className="ds-drawer-content flex flex-col">
+          {/* Navbar */}
+          <nav
+            ref={ref}
+            className={classNames(styles.reptexNavbar, {
+              [styles.isSticky]: isScrolled,
+            })}
+          >
+            <div className="flex-none lg:hidden">
+              <label
+                tabIndex={0}
+                htmlFor="my-drawer-3"
+                className="ds-btn ds-btn-square ds-btn-ghost"
+              >
+                <FontAwesomeIcon icon={faBars} size="xl" />
+              </label>
+            </div>
+            {/* Logo */}
+            <Link href="/" className="flex px-2 mx-2">
+              <div className={styles.image}>
+                <Image
+                  width={100}
+                  height={100}
+                  src="/img/logo.png"
+                  alt="REPTEX"
+                />
+              </div>
+            </Link>
+            <div className="flex-1"></div>
+            {/* Desktop menu */}
+            <div className="flex-none hidden lg:block">
+              <Navigation
+                className="ds-menu ds-menu-horizontal z-[100] ds-menu-lg ds-rounded-box"
+                links={navigation}
+                isMobile={false}
               />
             </div>
-          </Link>
+
+            {/* Action */}
+            <div className="ml-3">
+              <Link
+                href="/contact"
+                className="ds-btn ds-btn-ghost md:ds-btn-primary ds-btn-sm md:ds-btn-md"
+              >
+                <div className="hidden md:flex gap-2">
+                  Contactanos
+                  <FontAwesomeIcon icon={faArrowRightLong} />
+                </div>
+                <span className="md:hidden">
+                  <FontAwesomeIcon icon={faPhone} />
+                </span>
+              </Link>
+            </div>
+          </nav>
+          {/* Page content here */}
+          {children}
         </div>
 
-        {/* Desktop menu */}
-        <div className="ds-navbar-center hidden lg:flex">
+        {/* Side bar */}
+        <div className="ds-drawer-side z-[160]">
+          <label htmlFor="my-drawer-3" className="ds-drawer-overlay"></label>
+
           <Navigation
-            className="ds-menu ds-menu-horizontal z-[100]"
+            tabIndex={0}
+            className="ds-menu p-4 w-80 h-full bg-base-100"
             links={navigation}
-            isMobile={false}
+            isMobile={true}
           />
         </div>
-
-        {/* Action */}
-        <div className="ds-navbar-end">
-          <Link
-            href="/contact"
-            className="ds-btn ds-btn-ghost md:ds-btn-primary ds-btn-sm md:ds-btn-md"
-          >
-            <div className="hidden md:flex gap-2">
-              Contactanos
-              <FontAwesomeIcon icon={faArrowRightLong} />
-            </div>
-            <span className="md:hidden">
-              <FontAwesomeIcon icon={faPhone} />
-            </span>
-          </Link>
-        </div>
       </header>
-
-      <div
-        className={classNames("bg-transparent", { hidden: !isScrolled })}
-        style={{ height: `${height}px` }}
-      ></div>
     </>
   );
 };
@@ -119,7 +134,11 @@ const Navigation = ({
   return (
     <ul {...props}>
       {links.map((link, index) => (
-        <MenuLink key={index} link={link} isMobile={isMobile} />
+        <MenuLink
+          key={`navigation-item-${index}`}
+          link={link}
+          isMobile={isMobile}
+        />
       ))}
     </ul>
   );
@@ -132,36 +151,19 @@ const MenuLink = ({
   link: HeaderLink;
   isMobile: boolean;
 }) => {
-  const hasChildren = (link.childs?.length || 0) > 0;
-
   return (
     <li>
-      {link.redirect ? (
-        <Link
-          className={classNames({ "justify-between": isMobile && hasChildren })}
-          href={link.url}
-        >
+      {link.childs?.length ? (
+        <details>
+          <summary className="font-light">{link.label}</summary>
+          <Navigation links={link.childs} isMobile={isMobile} />
+        </details>
+      ) : link.redirect ? (
+        <Link href={link.url} className="font-light">
           {link.label}
-          {hasChildren && (
-            <FontAwesomeIcon icon={isMobile ? faChevronRight : faChevronDown} />
-          )}
         </Link>
       ) : (
-        <span
-          className={classNames({ "justify-between": isMobile && hasChildren })}
-        >
-          {link.label}
-          {hasChildren && (
-            <FontAwesomeIcon icon={isMobile ? faChevronRight : faChevronDown} />
-          )}
-        </span>
-      )}
-      {link.childs?.length && (
-        <Navigation
-          className="p-2 bg-base-100 md:shadow-md"
-          links={link.childs}
-          isMobile={isMobile}
-        />
+        <span className="font-light">{link.label}</span>
       )}
     </li>
   );

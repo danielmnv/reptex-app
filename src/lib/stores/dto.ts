@@ -33,6 +33,7 @@ export type StoreRow = {
   url: string;
   coords: GeoPoint;
   main?: boolean;
+  whatsapp?: number;
 };
 
 export type Store = {
@@ -44,6 +45,7 @@ export type Store = {
   url: string;
   coords: StoreCoords;
   main?: boolean;
+  whatsapp?: number;
 };
 
 export type StoreCoords = {

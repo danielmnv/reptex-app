@@ -6,6 +6,16 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "8rem",
+      },
+    },
     extend: {
       animation: {
         sticky: "sticky 0.35s ease-out",
@@ -23,11 +33,13 @@ module.exports = {
     themes: [
       {
         reptex: {
-          ...require("daisyui/src/colors/themes")["[data-theme=cmyk]"],
           primary: "#0060bb",
           secondary: "#ea581d",
-          accent: "#5c7f67",
-          neutral: "#5D5656",
+          accent: "#748e9c",
+          neutral: "#1e293b",
+          "base-100": "#ffffff",
+          "--rounded-btn": "0.8rem",
+          "--padding-card": "1.5rem",
         },
       },
     ],
