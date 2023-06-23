@@ -3,7 +3,7 @@
 import {
   faArrowRightLong,
   faBars,
-  faPhone,
+  faEarthAmericas,
 } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, {
@@ -12,17 +12,24 @@ import React, {
   useState,
   HTMLAttributes,
   PropsWithChildren,
+  useContext,
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import classNames from "classnames";
 import styles from "./navbar.module.css";
 import { HeaderLink } from "../lib/navigation/dto";
+import { ResponsiveContext } from "../context/responsive.context";
+import { usePathname } from "next/navigation";
 
 export const Navbar = ({
   navigation,
   children,
 }: PropsWithChildren<{ navigation: HeaderLink[] }>) => {
+  const { useMobileQuery } = useContext(ResponsiveContext);
+  const pathname = usePathname();
+  const isMobile = useMobileQuery();
+
   const ref = useRef<HTMLDivElement>(null);
   const [isScrolled, setScrolled] = useState<boolean>();
 
@@ -88,20 +95,24 @@ export const Navbar = ({
             </div>
 
             {/* Action */}
-            <div className="ml-3">
-              <Link
-                href="/contact"
-                className="ds-btn ds-btn-ghost md:ds-btn-primary ds-btn-sm md:ds-btn-md"
-              >
-                <div className="hidden md:flex gap-2">
-                  Contactanos
-                  <FontAwesomeIcon icon={faArrowRightLong} />
-                </div>
-                <span className="md:hidden">
-                  <FontAwesomeIcon icon={faPhone} />
-                </span>
-              </Link>
-            </div>
+            {(!isMobile || pathname !== "/contact") && (
+              <div className="ml-3">
+                <Link
+                  href="/contact"
+                  className="ds-btn ds-btn-ghost md:ds-btn-primary ds-btn-sm md:ds-btn-md"
+                >
+                  <div className="hidden md:flex gap-2">
+                    Contactanos
+                    <FontAwesomeIcon icon={faArrowRightLong} />
+                  </div>
+                  <span className="md:hidden">
+                    <FontAwesomeIcon icon={faEarthAmericas} />
+                  </span>
+                </Link>
+              </div>
+            )}
+
+            <div id="navbar-portal"></div>
           </nav>
           {/* Page content here */}
           {children}

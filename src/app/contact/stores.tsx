@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "./styles.module.css";
+import pin from "../../../public/img/pin.svg";
 
 import {
   faPhone,
@@ -9,6 +10,7 @@ import {
   faDiamondTurnRight,
   faStore,
   faClose,
+  faMagnifyingGlass,
 } from "@fortawesome/pro-duotone-svg-icons";
 import {
   GoogleMap,
@@ -17,10 +19,15 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   useTransition,
-  useSpring,
   animated,
   config as springConfig,
 } from "@react-spring/web";
@@ -28,8 +35,14 @@ import { Store } from "../../lib/stores/dto";
 import classNames from "classnames";
 import Image from "next/image";
 import { useScroll, useTransform, motion } from "framer-motion";
+import { ResponsiveContext } from "../../context/responsive.context";
+import { NavbarPortal } from "../../portal/navbar-portal";
+import { getSocialMediaIcon } from "../social-media-item";
 
 const Stores = ({ stores }: { stores: Store[] }) => {
+  const { useMobileQuery } = useContext(ResponsiveContext);
+  const isMobile = useMobileQuery();
+
   const [keyword, setKeyword] = useState<string>("");
   const [filteredList, setFilteredList] = useState<Store[]>(stores);
   const [selectedStore, setSelectedStore] = useState<Store>();
@@ -89,26 +102,17 @@ const Stores = ({ stores }: { stores: Store[] }) => {
       >
         {isMapLoaded && (
           <>
-            <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-32 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
-              <label className="ds-input-group">
-                <input
-                  type="text"
-                  placeholder="Busca una tienda"
-                  className="ds-input ds-input-sm md:ds-input-md ds-input-bordered"
-                  value={keyword}
-                  onChange={({ target }) => setKeyword(target.value)}
+            {isMobile ? (
+              <NavbarPortal>
+                <StoreSearch
+                  keyword={keyword}
+                  setKeyword={setKeyword}
+                  isOnNavbar={true}
                 />
-                <button
-                  className="ds-btn ds-btn-sm md:ds-btn-md ds-btn-primary bg-opacity-95"
-                  onClick={() => !!keyword && setKeyword("")}
-                >
-                  <FontAwesomeIcon
-                    icon={!!keyword ? faClose : faStore}
-                    className="text-white"
-                  />
-                </button>
-              </label>
-            </div>
+              </NavbarPortal>
+            ) : (
+              <StoreSearch keyword={keyword} setKeyword={setKeyword} />
+            )}
 
             <div className={styles.storeListWrapper}>
               <div className={styles.storeList}>
@@ -121,31 +125,47 @@ const Stores = ({ stores }: { stores: Store[] }) => {
                     })}
                     onClick={() => handleActiveMarker(store)}
                   >
-                    <h2 className="text-sm md:text-base font-extrabold">
-                      {store.name}
-                    </h2>
-                    <p className="text-sm font-normal flex-grow">
-                      {store.address}
-                    </p>
-                    <div className="flex justify-between items-center ">
-                      <a
-                        href={`tel:${store.phone}`}
-                        className={styles.arrowLink}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <FontAwesomeIcon icon={faPhone} />
-                        {store.phone}
-                      </a>
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-sm md:text-base font-extrabold">
+                        {store.name}
+                      </h2>
 
                       <a
                         href={store.url}
-                        onClick={(e) => e.stopPropagation()}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-secondary-focus text-base md:text-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                        className="ds-btn ds-btn-sm ds-btn-ghost text-secondary-focus"
                       >
-                        <FontAwesomeIcon icon={faDiamondTurnRight} />
+                        <FontAwesomeIcon icon={faDiamondTurnRight} size="lg" />
                       </a>
+                    </div>
+                    <p className="text-sm font-light flex-grow">
+                      {store.address}
+                    </p>
+                    <div className="ds-join">
+                      <a
+                        href={`tel:${store.phone}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                      >
+                        <FontAwesomeIcon icon={faPhone} />
+                      </a>
+
+                      {!!store.whatsapp && (
+                        <a
+                          href={`https://wa.me/${store.whatsapp}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                        >
+                          <FontAwesomeIcon
+                            icon={getSocialMediaIcon("WhatsApp")}
+                            size="lg"
+                          />
+                        </a>
+                      )}
                     </div>
                   </animated.div>
                 ))}
@@ -161,6 +181,60 @@ const Stores = ({ stores }: { stores: Store[] }) => {
           onMapLoad={setIsMapLoaded}
         />
       </motion.div>
+    </div>
+  );
+};
+
+const StoreSearch = ({
+  keyword,
+  setKeyword,
+  isOnNavbar = false,
+}: {
+  keyword: string;
+  setKeyword: (k: string) => void;
+  isOnNavbar?: boolean;
+}) => {
+  return (
+    <div
+      className={classNames("ds-form-control ", {
+        "absolute z-10 left-1/2 -translate-x-1/2 top-32 md:left-6 md:translate-x-0 w-4/5 max-w-xs":
+          !isOnNavbar,
+      })}
+    >
+      <label className="ds-join">
+        {isOnNavbar && (
+          <button className="ds-join-item ds-btn ds-btn-sm ds-btn-ghost hover:bg-opacity-0">
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
+        )}
+
+        <input
+          type="text"
+          placeholder="Busca una tienda"
+          className={classNames(
+            "ds-join-item ds-input ds-input-sm md:ds-input-md",
+            {
+              "ds-input-bordered": !isOnNavbar,
+              "ds-input-ghost max-w-[9rem] focus:outline-none focus:bg-opacity-0":
+                isOnNavbar,
+            }
+          )}
+          value={keyword}
+          onChange={({ target }) => setKeyword(target.value)}
+        />
+
+        {!isOnNavbar && (
+          <button
+            className="ds-join-item ds-btn ds-btn-sm md:ds-btn-md ds-btn-primary bg-opacity-95"
+            onClick={() => !!keyword && setKeyword("")}
+          >
+            <FontAwesomeIcon
+              icon={!!keyword ? faClose : faStore}
+              className="text-white"
+            />
+          </button>
+        )}
+      </label>
     </div>
   );
 };
@@ -286,8 +360,8 @@ const Map = ({
               position={s.coords}
               onClick={() => handleActiveMarker(s)}
               icon={{
-                url: "https://freesvg.org/img/ts-map-pin.png",
-                scaledSize: new google.maps.Size(41, 42),
+                url: pin.src,
+                scaledSize: new google.maps.Size(30, 30),
               }}
             >
               {selectedStore?.id === s.id && (

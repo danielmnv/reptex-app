@@ -14,8 +14,8 @@ type Review = {
 };
 
 type CardReviewProps = Review & {
-  type: "neutral" | "primary" | "secondary"
-}
+  type: "neutral" | "primary" | "secondary";
+};
 
 export const Reviews = () => {
   const reviews: Review[] = [
@@ -92,19 +92,36 @@ export const Reviews = () => {
     >
       <div className="masonry md:masonry-md lg:masonry-lg gap-6">
         {reviews.map((review, index) => {
-          const random = Math.floor(Math.random() * 3)
+          const random = Math.floor(Math.random() * 3);
 
           return (
             <Fragment key={`card-${index}-review`}>
-              <CardReview {...{ ...review, type: random === 0 ? "neutral" : random === 1 ? "primary" : "secondary"}} />
+              <CardReview
+                {...{
+                  ...review,
+                  type:
+                    random === 0
+                      ? "neutral"
+                      : random === 1
+                      ? "primary"
+                      : "secondary",
+                }}
+              />
             </Fragment>
-        )})}
+          );
+        })}
       </div>
     </Section>
   );
 };
 
-const CardReview = ({ initials, name, content, rating, type }: CardReviewProps) => {
+const CardReview = ({
+  initials,
+  name,
+  content,
+  rating,
+  type,
+}: CardReviewProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { amount: "some", once: true });
 
@@ -114,7 +131,7 @@ const CardReview = ({ initials, name, content, rating, type }: CardReviewProps) 
       className={classNames("ds-card w-full break-inside mb-6", {
         "bg-base-100": type === "neutral",
         "bg-primary": type === "primary",
-        "bg-secondary": type === "secondary"
+        "bg-secondary": type === "secondary",
       })}
       style={{
         opacity: isInView ? 1 : 0,
@@ -122,10 +139,12 @@ const CardReview = ({ initials, name, content, rating, type }: CardReviewProps) 
         transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
       }}
     >
-      <div className={classNames("ds-card-body", {
-        "text-base-200": type === "primary",
-        "text-base-100": type === "secondary"
-      })}>
+      <div
+        className={classNames("ds-card-body", {
+          "text-base-200": type === "primary",
+          "text-base-100": type === "secondary",
+        })}
+      >
         <div className="flex justify-between">
           <FontAwesomeIcon icon={faQuoteLeft} size="xl" />
 
@@ -137,23 +156,35 @@ const CardReview = ({ initials, name, content, rating, type }: CardReviewProps) 
 
         <p className="pt-4 font-light">{content}</p>
 
-        <div className={classNames("ds-divider", {
-          "before:bg-base-300 after:bg-base-300": type === "primary",
-          "before:bg-neutral-content after:bg-neutral-content": type === "secondary"
-        })}></div>
+        <div
+          className={classNames("ds-divider", {
+            "before:bg-base-300 after:bg-base-300": type === "primary",
+            "before:bg-neutral-content after:bg-neutral-content":
+              type === "secondary",
+          })}
+        ></div>
 
         <div className="ds-card-actions">
           <div className="flex items-center gap-x-4">
             <div className="ds-avatar ds-placeholder">
-              <div className={classNames("text-neutral-content rounded-full w-10 bg-opacity-60", {
-                "bg-neutral-focus": type === "neutral",
-                "bg-neutral": type === "primary",
-                "bg-base-300": type === "secondary"
-              })}>
-                <span className={classNames("font-semibold", {
-                  "text-neutra-contentl": type === "primary",
-                  "text-neutral-focus": type === "secondary",
-                })}>{initials}</span>
+              <div
+                className={classNames(
+                  "text-neutral-content rounded-full w-10 bg-opacity-60",
+                  {
+                    "bg-neutral-focus": type === "neutral",
+                    "bg-neutral": type === "primary",
+                    "bg-base-300": type === "secondary",
+                  }
+                )}
+              >
+                <span
+                  className={classNames("font-semibold", {
+                    "text-neutra-contentl": type === "primary",
+                    "text-neutral-focus": type === "secondary",
+                  })}
+                >
+                  {initials}
+                </span>
               </div>
             </div>
 

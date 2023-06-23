@@ -1,25 +1,30 @@
 "use client";
 
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { ResponsiveContext } from "../../context/responsive.context";
 import styles from "./loading.module.css";
 
 export default function Loading() {
+  const { useMobileQuery } = useContext(ResponsiveContext);
+  const isMobile = useMobileQuery();
   const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div ref={ref} className={styles.loading}>
       <div className="fixed w-full h-screen">
-        <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-32 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
-          <label className="ds-input-group">
-            <input
-              className="ds-input ds-input-sm md:ds-input-md ds-input-bordered bg-base-100"
-              disabled
-            />
-            <div className="animate-pulse ds-btn ds-btn-sm md:ds-btn-md bg-slate-700 border-slate-700">
-              <div className="rounded-full bg-white h-5 w-5"></div>
-            </div>
-          </label>
-        </div>
+        {!isMobile && (
+          <div className="ds-form-control w-4/5 max-w-xs absolute z-10 top-32 left-6 translate-x-0">
+            <label className="ds-input-group">
+              <input
+                className="ds-input ds-input-sm md:ds-input-md ds-input-bordered bg-base-100"
+                disabled
+              />
+              <div className="animate-pulse ds-btn ds-btn-sm md:ds-btn-md bg-slate-700 border-slate-700">
+                <div className="rounded-full bg-white h-5 w-5"></div>
+              </div>
+            </label>
+          </div>
+        )}
         <div className={styles.storeListWrapper}>
           <div className={styles.storeList}>
             {Array(5)
@@ -38,14 +43,12 @@ export default function Loading() {
                           <div className="h-2 bg-slate-700 rounded col-span-1"></div>
                         </div>
                         <div className="h-2 bg-slate-700 rounded"></div>
+                        <div className="h-2 bg-slate-700 rounded"></div>
                       </div>
                     </div>
                     <div className="flex-1">
                       <div className="grid grid-cols-4 gap-4 items-center">
                         <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                        <div className="col-span-2 flex justify-end">
-                          <div className="rounded-full bg-slate-700 h-5 w-5"></div>
-                        </div>
                       </div>
                     </div>
                   </div>
