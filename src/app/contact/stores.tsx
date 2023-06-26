@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./styles.module.css";
-import pin from "../../../public/img/pin.svg";
+import pin from "../../../public/img/pin.png";
 
 import {
   faPhone,
@@ -26,15 +26,15 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {
-  useTransition,
-  animated,
-  config as springConfig,
-} from "@react-spring/web";
 import { Store } from "../../lib/stores/dto";
 import classNames from "classnames";
 import Image from "next/image";
-import { useScroll, useTransform, motion } from "framer-motion";
+import {
+  useScroll,
+  useTransform,
+  motion,
+  AnimatePresence,
+} from "framer-motion";
 import { ResponsiveContext } from "../../context/responsive.context";
 import { NavbarPortal } from "../../portal/navbar-portal";
 import { getSocialMediaIcon } from "../social-media-item";
@@ -58,15 +58,19 @@ const Stores = ({ stores }: { stores: Store[] }) => {
     pos === 1 ? "relative" : "fixed"
   );
 
-  const transitions = useTransition(filteredList, {
-    from: { opacity: 0, transform: "translate3d(0,100%,0)" },
-    enter: { opacity: 1, transform: "translate3d(0,0%,0)" },
-    leave: { opacity: 0, transform: "translate3d(0,100%,0)" },
-    config: {
-      ...springConfig.gentle,
-      clamp: true,
+  const show = {
+    y: 0,
+    opacity: 1,
+    display: "flex",
+  };
+
+  const hide = {
+    y: 50,
+    opacity: 0,
+    transitionEnd: {
+      display: "none",
     },
-  });
+  };
 
   const handleActiveMarker = (store?: Store) => {
     if (store?.id === selectedStore?.id) {
@@ -116,59 +120,66 @@ const Stores = ({ stores }: { stores: Store[] }) => {
 
             <div className={styles.storeListWrapper}>
               <div className={styles.storeList}>
-                {transitions((style, store) => (
-                  <animated.div
-                    key={store.id}
-                    style={style}
-                    className={classNames(styles.storeBox, {
-                      [styles.active]: store.id === selectedStore?.id,
-                    })}
-                    onClick={() => handleActiveMarker(store)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm md:text-base font-extrabold">
-                        {store.name}
-                      </h2>
+                <AnimatePresence>
+                  {filteredList.map((store) => (
+                    <motion.div
+                      key={store.id}
+                      className={classNames(styles.storeBox, {
+                        [styles.active]: store.id === selectedStore?.id,
+                      })}
+                      initial={hide}
+                      animate={show}
+                      exit={hide}
+                      onClick={() => handleActiveMarker(store)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-sm md:text-base font-extrabold">
+                          {store.name}
+                        </h2>
 
-                      <a
-                        href={store.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="ds-btn ds-btn-sm ds-btn-ghost text-secondary-focus"
-                      >
-                        <FontAwesomeIcon icon={faDiamondTurnRight} size="lg" />
-                      </a>
-                    </div>
-                    <p className="text-sm font-light flex-grow">
-                      {store.address}
-                    </p>
-                    <div className="ds-join">
-                      <a
-                        href={`tel:${store.phone}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
-                      >
-                        <FontAwesomeIcon icon={faPhone} />
-                      </a>
-
-                      {!!store.whatsapp && (
                         <a
-                          href={`https://wa.me/${store.whatsapp}`}
+                          href={store.url}
                           target="_blank"
                           rel="noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                          className="ds-btn ds-btn-sm ds-btn-ghost text-secondary-focus"
                         >
                           <FontAwesomeIcon
-                            icon={getSocialMediaIcon("WhatsApp")}
+                            icon={faDiamondTurnRight}
                             size="lg"
                           />
                         </a>
-                      )}
-                    </div>
-                  </animated.div>
-                ))}
+                      </div>
+                      <p className="text-sm font-light flex-grow">
+                        {store.address}
+                      </p>
+                      <div className="ds-join">
+                        <a
+                          href={`tel:${store.phone}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                        >
+                          <FontAwesomeIcon icon={faPhone} />
+                        </a>
+
+                        {!!store.whatsapp && (
+                          <a
+                            href={`https://wa.me/${store.whatsapp}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                          >
+                            <FontAwesomeIcon
+                              icon={getSocialMediaIcon("WhatsApp")}
+                              size="lg"
+                            />
+                          </a>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
             </div>
           </>
@@ -361,7 +372,7 @@ const Map = ({
               onClick={() => handleActiveMarker(s)}
               icon={{
                 url: pin.src,
-                scaledSize: new google.maps.Size(30, 30),
+                scaledSize: new google.maps.Size(19, 30),
               }}
             >
               {selectedStore?.id === s.id && (
