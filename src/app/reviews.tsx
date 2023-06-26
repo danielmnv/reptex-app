@@ -130,8 +130,8 @@ const CardReview = ({
       ref={ref}
       className={classNames("ds-card w-full break-inside mb-6", {
         "bg-base-100": type === "neutral",
-        "bg-primary": type === "primary",
-        "bg-secondary": type === "secondary",
+        "bg-neutral": type === "primary",
+        "bg-accent": type === "secondary",
       })}
       style={{
         opacity: isInView ? 1 : 0,
@@ -172,7 +172,7 @@ const CardReview = ({
                   "text-neutral-content rounded-full w-10 bg-opacity-60",
                   {
                     "bg-neutral-focus": type === "neutral",
-                    "bg-neutral": type === "primary",
+                    "bg-neutral-content": type === "primary",
                     "bg-base-300": type === "secondary",
                   }
                 )}

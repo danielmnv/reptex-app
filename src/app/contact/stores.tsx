@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./styles.module.css";
-import pin from "../../../public/img/pin.svg";
+import pin from "../../../public/img/pin.png";
 
 import {
   faPhone,
@@ -361,7 +361,7 @@ const Map = ({
               onClick={() => handleActiveMarker(s)}
               icon={{
                 url: pin.src,
-                scaledSize: new google.maps.Size(30, 30),
+                scaledSize: new google.maps.Size(19, 30),
               }}
             >
               {selectedStore?.id === s.id && (
