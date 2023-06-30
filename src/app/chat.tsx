@@ -10,7 +10,13 @@ import {
 } from "@fortawesome/pro-duotone-svg-icons";
 import { faClose, faMinus } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PropsWithChildren, useContext, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  RefObject,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   AnimatePresence,
   motion,
@@ -44,10 +50,17 @@ type UserInputProps = {
 
 type FabButtonProps = {
   isOpen: boolean;
+  target: RefObject<HTMLElement>;
   setIsOpen: (o: boolean) => void;
 };
 
-export const Chat = ({ stores }: { stores: Store[] }) => {
+export const Chat = ({
+  stores,
+  footerRef,
+}: {
+  stores: Store[];
+  footerRef: RefObject<HTMLElement>;
+}) => {
   // States
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [started, setStarted] = useState<boolean>(false);
@@ -182,7 +195,7 @@ export const Chat = ({ stores }: { stores: Store[] }) => {
         />
       </Conversation>
 
-      <FabButton isOpen={isOpen} setIsOpen={setIsOpen} />
+      <FabButton isOpen={isOpen} target={footerRef} setIsOpen={setIsOpen} />
     </>
   );
 };
@@ -344,10 +357,15 @@ const UserInput = ({ trigger, value, setValue, onSubmit }: UserInputProps) => {
   );
 };
 
-const FabButton = ({ isOpen, setIsOpen }: FabButtonProps) => {
-  const { scrollYProgress } = useScroll();
+const FabButton = ({ isOpen, target, setIsOpen }: FabButtonProps) => {
+  const { scrollYProgress } = useScroll({
+    target,
+    layoutEffect: false,
+    offset: ["start end", "end start"],
+  });
 
-  const opacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.02], [0, 20]);
+  const opacity = useTransform(scrollYProgress, [0, 0.02], [1, 0]);
 
   return (
     <div className="fab-button-wrapper">
@@ -356,8 +374,8 @@ const FabButton = ({ isOpen, setIsOpen }: FabButtonProps) => {
         onClick={() => setIsOpen(!isOpen)}
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
-        style={{ opacity }}
-        transition={{ duration: 0.3 }}
+        style={{ y, opacity }}
+        transition={{ duration: 0.4 }}
       >
         <FontAwesomeIcon icon={isOpen ? faClose : faComments} size="lg" />
       </motion.button>
