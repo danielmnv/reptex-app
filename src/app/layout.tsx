@@ -32,11 +32,14 @@ export default async function RootLayout({
           <Navbar navigation={headerNavigation}>
             <main className={styles.mainWrapper}>
               {children}
-              <Chat stores={stores} />
               <ScrollToTop />
             </main>
           </Navbar>
-          <Footer navigation={footerNavigation} socialMedia={socialMedia} />
+          <Footer
+            navigation={footerNavigation}
+            socialMedia={socialMedia}
+            stores={stores}
+          />
         </ResponsiveContextProvider>
       </body>
     </html>

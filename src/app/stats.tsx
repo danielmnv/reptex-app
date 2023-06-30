@@ -7,24 +7,16 @@ import { getSocialMediaIcon } from "./social-media-item";
 export const Stats = () => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const container = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
   const slider = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  const position = useTransform(container.scrollYProgress, (pos) =>
-    pos > 0 ? "fixed" : "relative"
-  );
   const x = useTransform(slider.scrollYProgress, [0, 1], [1000, -1000]);
 
   return (
     <div ref={ref} className="relative h-[300vh] md:h-[300vh]">
-      <motion.div className="w-screen" style={{ top: 0, position }}>
+      <div className="w-screen sticky top-0">
         <Section
           title="Stats"
           text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde cupiditate in natus libero facilis quaerat vitae accusamus quibusdam eum architecto, deserunt id minus. Impedit, asperiores excepturi numquam error repudiandae obcaecati."
@@ -82,7 +74,7 @@ export const Stats = () => {
             </motion.div>
           </div>
         </Section>
-      </motion.div>
+      </div>
     </div>
   );
 };

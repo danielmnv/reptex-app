@@ -3,13 +3,14 @@ import { useInView, motion } from "framer-motion";
 import { PropsWithChildren, ReactNode, useRef } from "react";
 
 type ISectionProps = PropsWithChildren<{
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
   className?: string;
+  id?: string;
   preTitle?: ReactNode;
 }>;
 
-type IGridSectionProps = Partial<ISectionProps> & {
+type IGridSectionProps = ISectionProps & {
   titleClass?: string;
   extra?: ReactNode;
   reverse?: boolean;
@@ -21,13 +22,13 @@ export const Section: React.FC<ISectionProps> = ({
   text,
   className,
   children,
-  ...props
+  id,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { amount: "some", once: true });
 
   return (
-    <div ref={ref} className={classNames("section", className)}>
+    <div id={id} ref={ref} className={classNames("section", className)}>
       <div className="container">
         <div className="flex flex-col gap-y-20">
           {(preTitle || title || text) && (
@@ -96,7 +97,7 @@ export const GridSection: React.FC<IGridSectionProps> = ({
               </span>
             )}
 
-            {text && <p className="font-extralight">{text}</p>}
+            {text && <p className="font-extralight text-justify">{text}</p>}
 
             {extra}
           </motion.div>
