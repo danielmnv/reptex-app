@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { Fragment, useContext, useRef } from "react";
 import { ResponsiveContext } from "../../context/responsive.context";
 import { GridSection, Section } from "../section";
@@ -49,7 +50,7 @@ export const Company = () => {
   return (
     <div className="bg-[#f7f7f7]">
       <GridSection
-        className="min-h-screen flex items-center py-0 my-0"
+        className="min-h-screen flex items-center pt-20 md:py-0 my-0"
         title="¿Quiénes somos?"
         text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis est sapiente deleniti. Cumque eius eveniet, saepe aliquam reiciendis nihil architecto pariatur assumenda iste autem, fugit impedit quo, harum vero ut!"
         extra={
@@ -143,7 +144,7 @@ const CompanyFunctionalities = () => {
   const isTabletOrMobile = useTabletOrMobileQuery();
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const isCardInView = useInView(cardRef, { once: true });
   const isButtonInView = useInView(buttonRef, { once: true });
 
@@ -178,23 +179,26 @@ const CompanyFunctionalities = () => {
             ))}
           </div>
 
-          <div className="w-5/6 md:w-full">
-            <motion.button
-              ref={buttonRef}
+          <motion.div
+            ref={buttonRef}
+            className="w-5/6 md:w-full"
+            style={{
+              transform: !isTabletOrMobile
+                ? "none"
+                : isButtonInView
+                ? "none"
+                : "translateY(150px)",
+              opacity: isButtonInView ? 1 : 0,
+              transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
+            }}
+          >
+            <Link
+              href="/empresa/historia"
               className="ds-btn ds-btn-outline ds-btn-block ds-btn-neutral"
-              style={{
-                transform: !isTabletOrMobile
-                  ? "none"
-                  : isButtonInView
-                  ? "none"
-                  : "translateY(150px)",
-                opacity: isButtonInView ? 1 : 0,
-                transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
-              }}
             >
               Descubre nuestra historia
-            </motion.button>
-          </div>
+            </Link>
+          </motion.div>
         </div>
 
         <motion.div

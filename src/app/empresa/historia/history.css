@@ -1,0 +1,11 @@
+.card-arrow {
+  @apply absolute top-6 left-auto right-full
+        content-[''] h-0 w-0
+        border-[7px] border-solid border-transparent
+        border-r-base-200;
+
+  &.card-left {
+    @apply lg:left-full lg:right-full lg:rotate-180
+        border-r-neutral;
+  }
+}
