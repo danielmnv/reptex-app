@@ -11,7 +11,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Fragment, useContext, useEffect, useRef } from "react";
-import { GridSection, Section } from "../../section";
+import { GridSection, Section } from "../../components/section";
 import { ResponsiveContext } from "../../../context/responsive.context";
 
 type TimelineItem = {

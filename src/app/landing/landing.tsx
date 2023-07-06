@@ -1,14 +1,8 @@
 "use client";
 
-import React, {
-  Fragment,
-  RefObject,
-  useContext,
-  useEffect,
-  useRef,
-} from "react";
+import React, { Fragment, RefObject, useContext, useRef } from "react";
 import { Stats } from "./stats";
-import { ResponsiveContext } from "../context/responsive.context";
+import { ResponsiveContext } from "../../context/responsive.context";
 import {
   motion,
   useInView,
@@ -21,7 +15,6 @@ import { Experience } from "./experience";
 import { Brands } from "./brands";
 import { Reviews } from "./reviews";
 import classNames from "classnames";
-import { SVGItem } from "./svg-item";
 
 export const Landing = () => {
   return (

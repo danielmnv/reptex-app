@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faHandshakeAlt } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SocialMedia, SocialMediaType } from "../lib/social-media/dto";
+import { SocialMedia, SocialMediaType } from "../../lib/social-media/dto";
 
 export const getSocialMediaIcon = (type: SocialMediaType): IconDefinition => {
   switch (type) {

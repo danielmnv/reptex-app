@@ -3,13 +3,12 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import styles from "./layout.module.css";
 
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
+import { Navbar } from "./layout/navbar";
+import { Footer } from "./layout/footer";
 import { loadSocialMedia } from "../lib/social-media";
 import { loadFooterNavigation, loadHeaderNavigation } from "../lib/navigation";
-import { Chat } from "./chat";
 import { loadStores } from "../lib/stores";
-import { ScrollToTop } from "./scroll-to-top";
+import { ScrollToTop } from "./components/scroll-to-top";
 import { ResponsiveContextProvider } from "../context/responsive.context";
 
 config.autoAddCss = false;

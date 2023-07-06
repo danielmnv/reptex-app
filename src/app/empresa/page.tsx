@@ -1,5 +1,4 @@
 import React from "react";
-import { loadStores } from "../../lib/stores";
 import { Company } from "./company";
 
 export const metadata = {
@@ -11,7 +10,5 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const stores = await loadStores();
-
   return <Company />;
 }

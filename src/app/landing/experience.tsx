@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { useRef } from "react";
-import { GridSection } from "./section";
+import { GridSection } from "../components/section";
 
 export const Experience = () => {
   const imageRef = useRef<HTMLImageElement>(null);

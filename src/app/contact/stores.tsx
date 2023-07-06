@@ -36,8 +36,8 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { ResponsiveContext } from "../../context/responsive.context";
-import { NavbarPortal } from "../../portal/navbar-portal";
-import { getSocialMediaIcon } from "../social-media-item";
+import { NavbarPortal } from "../components/navbar-portal";
+import { getSocialMediaIcon } from "../components/social-media-item";
 
 const Stores = ({ stores }: { stores: Store[] }) => {
   const { useMobileQuery } = useContext(ResponsiveContext);

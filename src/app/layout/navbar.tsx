@@ -18,8 +18,8 @@ import Image from "next/image";
 import Link from "next/link";
 import classNames from "classnames";
 import styles from "./navbar.module.css";
-import { HeaderLink } from "../lib/navigation/dto";
-import { ResponsiveContext } from "../context/responsive.context";
+import { HeaderLink } from "../../lib/navigation/dto";
+import { ResponsiveContext } from "../../context/responsive.context";
 import { usePathname } from "next/navigation";
 
 export const Navbar = ({

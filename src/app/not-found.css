@@ -1,0 +1,33 @@
+.not-found {
+  &-wrapper {
+    @apply relative w-full h-full container grid grid-cols-1 md:grid-cols-2 place-content-center place-items-center gap-y-20 pt-28 pb-20;
+  }
+
+  &-icon {
+    @apply text-primary-focus order-2 md:order-1;
+  }
+
+  &-content {
+    @apply order-1 md:order-2 flex flex-col gap-10 text-center md:text-start;
+  }
+
+  &-exclamation {
+    @apply text-6xl md:text-8xl font-bold text-neutral-focus;
+  }
+
+  &-title {
+    @apply text-4xl md:text-6xl font-bold text-primary-focus;
+  }
+
+  &-subtitle {
+    @apply text-2xl md:text-4xl font-bold text-primary-focus;
+  }
+
+  &-description {
+    @apply text-neutral font-extralight;
+  }
+
+  &-button {
+    @apply ds-btn ds-btn-block sm:ds-btn-wide md:ds-btn-block xl:ds-btn-wide ds-btn-secondary;
+  }
+}

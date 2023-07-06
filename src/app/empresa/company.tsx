@@ -18,8 +18,8 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { Fragment, useContext, useRef } from "react";
 import { ResponsiveContext } from "../../context/responsive.context";
-import { GridSection, Section } from "../section";
-import { TopCard } from "../top-card";
+import { GridSection, Section } from "../components/section";
+import { TopCard } from "../components/top-card";
 
 export const Company = () => {
   const imageRef = useRef<HTMLImageElement>(null);
