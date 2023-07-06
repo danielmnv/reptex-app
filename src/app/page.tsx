@@ -1,4 +1,4 @@
-import { Landing } from "./landing";
+import { Landing } from "./landing/landing";
 
 export const metadata = {
   title: "Create Next App",

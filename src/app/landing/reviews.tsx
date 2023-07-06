@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { useInView } from "framer-motion";
 import { Fragment, useRef } from "react";
-import { Section } from "./section";
+import { Section } from "../components/section";
 
 type Review = {
   initials: string;

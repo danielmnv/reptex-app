@@ -3,16 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./footer.module.css";
-import { FooterSection } from "../lib/navigation/dto";
-import { SocialMedia } from "../lib/social-media/dto";
-import { SocialMediaItem } from "./social-media-item";
+import { FooterSection } from "../../lib/navigation/dto";
+import { SocialMedia } from "../../lib/social-media/dto";
+import { SocialMediaItem } from "../components/social-media-item";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopyright } from "@fortawesome/pro-duotone-svg-icons";
-import { SVGItem } from "./svg-item";
+import { SVGItem } from "../components/svg-item";
 import { useContext, useRef, useState } from "react";
-import { ResponsiveContext } from "../context/responsive.context";
-import { Chat } from "./chat";
-import { Store } from "../lib/stores/dto";
+import { ResponsiveContext } from "../../context/responsive.context";
+import { Chat } from "../components/chat";
+import { Store } from "../../lib/stores/dto";
 
 export const Footer = ({
   navigation,

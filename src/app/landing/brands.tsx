@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { RefObject, useContext, useRef } from "react";
-import { ResponsiveContext } from "../context/responsive.context";
-import { Section } from "./section";
-import { IconNames, SVGItem } from "./svg-item";
+import { ResponsiveContext } from "../../context/responsive.context";
+import { Section } from "../components/section";
+import { IconNames, SVGItem } from "../components/svg-item";
 
 export const Brands = () => {
   const { useMobileQuery } = useContext(ResponsiveContext);

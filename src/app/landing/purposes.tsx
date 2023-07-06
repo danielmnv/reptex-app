@@ -5,8 +5,8 @@ import {
   faWandMagicSparkles,
 } from "@fortawesome/pro-duotone-svg-icons";
 import { Fragment } from "react";
-import { Section } from "./section";
-import { TopCard } from "./top-card";
+import { Section } from "../components/section";
+import { TopCard } from "../components/top-card";
 
 export const Purposes = () => {
   const functionalities = [

@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
-import { Section } from "./section";
-import { getSocialMediaIcon } from "./social-media-item";
+import { Section } from "../components/section";
+import { getSocialMediaIcon } from "../components/social-media-item";
 
 export const Stats = () => {
   const ref = useRef<HTMLDivElement>(null);

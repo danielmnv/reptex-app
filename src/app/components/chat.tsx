@@ -24,9 +24,9 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { Store } from "../lib/stores/dto";
+import { Store } from "../../lib/stores/dto";
 import classNames from "classnames";
-import { ResponsiveContext } from "../context/responsive.context";
+import { ResponsiveContext } from "../../context/responsive.context";
 
 type ConversationProps = PropsWithChildren<{
   isOpen: boolean;
