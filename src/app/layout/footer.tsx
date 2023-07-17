@@ -70,7 +70,11 @@ export const Footer = ({
                   <div key={`section-${title}-${index}`}>
                     <span className="ds-footer-title">{title}</span>
                     {links.map(({ label, url }, index) => (
-                      <Link key={`link-${label}-${index}`} href={url}>
+                      <Link
+                        key={`link-${label}-${index}`}
+                        href={url}
+                        className="transition-colors duration-100 ease-in-out hover:text-white"
+                      >
                         {label}
                       </Link>
                     ))}

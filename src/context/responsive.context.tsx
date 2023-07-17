@@ -7,6 +7,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { useMediaQuery } from "react-responsive";
+import { Loader } from "../app/components/loader";
 
 export interface ResponsiveContext {
   useMobileQuery: () => boolean;
@@ -40,7 +41,7 @@ export const ResponsiveContextProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <ResponsiveContext.Provider value={responsiveContext}>
-      {isLoading ? <></> : children}
+      {isLoading ? <Loader /> : children}
     </ResponsiveContext.Provider>
   );
 };
