@@ -3,7 +3,8 @@
 import { faMinus, faPlus } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
 import { FaqGroup, FaqItem } from "../../lib/faq/dto";
 import { Section } from "../components/section";
 
@@ -20,16 +21,40 @@ export const FAQContainer = ({ faqs }: { faqs: FaqGroup[] }) => {
 };
 
 const FAQGroup = ({ group }: { group: FaqGroup }) => {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+
+  const isTitleInView = useInView(titleRef, { once: true });
+  const isGroupInView = useInView(titleRef, { once: true });
+
   return (
     <div>
-      <h2 className="text-slate-600 text-2xl font-semibold mb-6">
+      <motion.h2
+        ref={titleRef}
+        className="text-slate-600 text-2xl font-semibold mb-6"
+        style={{
+          opacity: isTitleInView ? 1 : 0,
+          transformOrigin: "left",
+          transform: isGroupInView ? "translateY(0)" : "translateY(40px)",
+          transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
+        }}
+      >
         {group.name}
-      </h2>
-      <div className="flex flex-col gap-y-4 w-full">
+      </motion.h2>
+
+      <motion.div
+        ref={groupRef}
+        className="flex flex-col gap-y-4 w-full"
+        style={{
+          opacity: isGroupInView ? 1 : 0,
+          transform: isGroupInView ? "translateY(0)" : "translateY(80px)",
+          transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
+        }}
+      >
         {group.items.map((item, index) => (
           <FAQItem key={`faq-group-item-${index}`} item={item} />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -43,7 +68,7 @@ const FAQItem = ({ item }: { item: FaqItem }) => {
         type="checkbox"
         className="peer"
         checked={checked}
-        onClick={({ target }) => setIsChecked((prev) => !prev)}
+        onClick={() => setIsChecked((prev) => !prev)}
       />
 
       <div className="ds-collapse-title !pr-4 flex gap-x-10 items-center justify-between">

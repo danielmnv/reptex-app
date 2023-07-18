@@ -95,10 +95,10 @@ export const Navbar = ({
             </div>
 
             {/* Action */}
-            {(!isMobile || pathname !== "/contact") && (
+            {(!isMobile || pathname !== "/contacto") && (
               <div className="ml-3">
                 <Link
-                  href="/contact"
+                  href="/contacto"
                   className="ds-btn ds-btn-ghost md:ds-btn-primary ds-btn-sm md:ds-btn-md"
                 >
                   <div className="hidden md:flex gap-2">

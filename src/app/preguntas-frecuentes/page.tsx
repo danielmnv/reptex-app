@@ -12,9 +12,5 @@ export const metadata = {
 
 export default async function Page() {
   const faqs = await loadFaqs();
-  return (
-    <>
-      <FAQContainer faqs={faqs} />
-    </>
-  );
+  return <FAQContainer faqs={faqs} />;
 }
