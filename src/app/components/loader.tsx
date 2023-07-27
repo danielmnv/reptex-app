@@ -1,8 +1,11 @@
 import Image from "next/image";
+import classNames from "classnames";
 import { useEffect } from "react";
 
-export const Loader = () => {
+export const Loader = ({ isOverlay = false }: { isOverlay?: boolean }) => {
   useEffect(() => {
+    if (isOverlay) return;
+
     window.scrollTo({ top: 0 });
 
     document.body.classList.add("overflow-hidden");
@@ -13,7 +16,12 @@ export const Loader = () => {
 
   return (
     <>
-      <div className="fixed h-screen w-screen bg-neutral-focus bg-opacity-60 overflow-hidden z-[200]">
+      <div
+        className={classNames(
+          "fixed h-screen w-screen bg-neutral-focus bg-opacity-60 overflow-hidden z-[200]",
+          {}
+        )}
+      >
         <div className="flex flex-col items-center justify-center h-full w-full">
           <div>
             <Image
@@ -29,9 +37,11 @@ export const Loader = () => {
         </div>
       </div>
 
-      <div className="relative min-h-screen min-w-full">
-        <span className="invisible">wrapper</span>
-      </div>
+      {!isOverlay && (
+        <div className="relative min-h-screen min-w-full">
+          <span className="invisible">wrapper</span>
+        </div>
+      )}
     </>
   );
 };

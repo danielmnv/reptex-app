@@ -38,7 +38,7 @@ module.exports = {
           accent: "#748e9c",
           neutral: "#1e293b",
           "base-100": "#ffffff",
-          "--rounded-btn": "0.8rem",
+          "--rounded-btn": "6px",
           "--padding-card": "1.5rem",
         },
       },
