@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -12,14 +12,17 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_G_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app =
+  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const db = getFirestore(app);
 
-if (process.env.IS_DEV) {
+if (process.env.NEXT_PUBLIC_IS_DEV) {
   connectFirestoreEmulator(
     db,
     "localhost",
-    process.env.DEV_EMULATOR ? parseInt(process.env.DEV_EMULATOR) : 8090
+    process.env.NEXT_PUBLIC_DEV_EMULATOR
+      ? parseInt(process.env.NEXT_PUBLIC_DEV_EMULATOR)
+      : 8090
   );
 }
 

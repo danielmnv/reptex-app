@@ -1,4 +1,5 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { CategoryIcon } from "../category/dto";
 
 export const HeaderLinkConverter = {
   toFirestore(navigationLink: HeaderLink): DocumentData {
@@ -25,6 +26,7 @@ type NavigationLinkBase = {
 
 type HeaderLinkBase = NavigationLinkBase & {
   redirect: boolean;
+  icon?: CategoryIcon;
 };
 
 export type HeaderLink = HeaderLinkBase & {

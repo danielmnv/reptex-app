@@ -1,14 +1,19 @@
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { useInView, motion } from "framer-motion";
 import { PropsWithChildren, ReactNode, useRef } from "react";
 
-type ISectionProps = PropsWithChildren<{
-  title?: string;
-  text?: string;
-  className?: string;
-  id?: string;
-  preTitle?: ReactNode;
-}>;
+type ISectionProps = PropsWithChildren<
+  Partial<{
+    title: string;
+    icon: IconDefinition;
+    text: string;
+    className: string;
+    containerClassName: string;
+    preTitle: ReactNode;
+  }>
+>;
 
 type IGridSectionProps = ISectionProps & {
   titleClass?: string;
@@ -21,15 +26,19 @@ export const Section: React.FC<ISectionProps> = ({
   title,
   text,
   className,
+  containerClassName,
   children,
-  id,
+  ...props
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: "some", once: true });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { amount: "some", once: true });
 
   return (
-    <div id={id} ref={ref} className={classNames("section", className)}>
-      <div className="container">
+    <div className={classNames("section", className)}>
+      <div
+        ref={containerRef}
+        className={classNames("container", containerClassName)}
+      >
         <div className="flex flex-col gap-y-20">
           {(preTitle || title || text) && (
             <motion.div
@@ -65,6 +74,7 @@ export const GridSection: React.FC<IGridSectionProps> = ({
   extra,
   className,
   children,
+  icon,
   reverse = false,
   ...props
 }) => {
@@ -91,11 +101,21 @@ export const GridSection: React.FC<IGridSectionProps> = ({
           >
             {preTitle}
 
-            {title && (
-              <span className={classNames("text-4xl font-bold", titleClass)}>
-                {title}
-              </span>
-            )}
+            <div className="flex gap-x-4 place-items-center">
+              {!!icon && (
+                <FontAwesomeIcon
+                  icon={icon}
+                  size="4x"
+                  className="text-accent-focus"
+                />
+              )}
+
+              {title && (
+                <span className={classNames("text-4xl font-bold", titleClass)}>
+                  {title}
+                </span>
+              )}
+            </div>
 
             {text && <p className="font-extralight text-justify">{text}</p>}
 

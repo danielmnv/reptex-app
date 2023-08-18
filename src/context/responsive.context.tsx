@@ -24,7 +24,8 @@ export const ResponsiveContext = createContext<ResponsiveContext>(
 );
 
 export const ResponsiveContextProvider = ({ children }: PropsWithChildren) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isFirstRenderLoading, setIsFirstRenderLoading] =
+    useState<boolean>(true);
   const [responsiveContext, setResponsiveContext] = useState<ResponsiveContext>(
     initialResponsiveContext
   );
@@ -35,13 +36,13 @@ export const ResponsiveContextProvider = ({ children }: PropsWithChildren) => {
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       setResponsiveContext({ useMobileQuery, useTabletOrMobileQuery });
-      setIsLoading(false);
+      setIsFirstRenderLoading(false);
     }
   }, []);
 
   return (
     <ResponsiveContext.Provider value={responsiveContext}>
-      {isLoading ? <Loader /> : children}
+      {isFirstRenderLoading ? <Loader /> : children}
     </ResponsiveContext.Provider>
   );
 };
