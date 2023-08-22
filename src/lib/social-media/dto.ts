@@ -20,7 +20,9 @@ export type SocialMediaType =
   | "TikTok"
   | "Mercado Libre"
   | "WhatsApp"
-  | "Messenger";
+  | "Messenger"
+  | "Twitter"
+  | "Telegram";
 
 export type SocialMediaRow = {
   label: SocialMediaType;

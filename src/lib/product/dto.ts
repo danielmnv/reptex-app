@@ -13,12 +13,12 @@ export const ProductConverter = {
 
     return {
       ...data,
-      id: snapshot.id,
+      keyword: snapshot.id,
     };
   },
 };
 
-type ProductImage = {
+export type ProductImage = {
   src: string;
   alt?: string;
 };
@@ -28,16 +28,16 @@ export type ProductRow = {
   description: string;
   category: string;
   properties: Record<string, string | number>;
-  images?: ProductImage[];
+  images: ProductImage[];
 };
 
 export type Product = {
-  id: string;
+  keyword: string;
   name: string;
   description: string;
   category: string;
   properties: Record<string, string | number>;
-  images?: ProductImage[];
+  images: ProductImage[];
 };
 
 export type PaginatedCategoryProducts = {

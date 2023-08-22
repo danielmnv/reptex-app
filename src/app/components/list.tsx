@@ -3,9 +3,12 @@ import {
   faChevronsRight,
   faClose,
   faEllipsis,
+  faEye,
   faFacePleading,
   faFilterList,
   faFilterSlash,
+  faGridRound,
+  faListUl,
 } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
@@ -17,6 +20,7 @@ import {
 import { useAnimate } from "framer-motion";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 import { ResponsiveContext } from "../../context/responsive.context";
 import { useLoader } from "../../hooks/use-loader";
 import { Category } from "../../lib/category/dto";
@@ -26,8 +30,11 @@ import {
   PaginatedCategoryProducts,
   Product,
 } from "../../lib/product/dto";
+import { BreadCrumbItem, BreadCrumbs } from "./breadcrumbs";
 import { Filters } from "./filters";
 import { Section } from "./section";
+
+type TypeView = "grid" | "list";
 
 export const ProductList = ({ category }: { category: Category }) => {
   const { useTabletOrMobileQuery } = useContext(ResponsiveContext);
@@ -41,6 +48,13 @@ export const ProductList = ({ category }: { category: Category }) => {
   const isTabletOrMobile = useTabletOrMobileQuery();
   const [paginate, setPaginate] = useState<PaginatedCategoryProducts>();
   const [page, setPage] = useState<number>(1);
+  const [typeView, setTypeView] = useLocalStorageState<TypeView>("typeView", {
+    defaultValue: "grid",
+  });
+
+  const breadCrumbsItems: BreadCrumbItem[] = [
+    { label: category.name, url: "" },
+  ];
 
   const onChangePage = async (direction: "next" | "previous") => {
     if (!paginate) return;
@@ -116,7 +130,6 @@ export const ProductList = ({ category }: { category: Category }) => {
       response.items = [...(paginate?.items || []), ...response.items];
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     setPaginate(response);
     setLoading(false);
   };
@@ -153,66 +166,103 @@ export const ProductList = ({ category }: { category: Category }) => {
 
   return (
     <Section containerClassName="!max-w-[1500px]">
+      <BreadCrumbs className="-mb-12" items={breadCrumbsItems} />
+      <hr className="-mb-10" />
+
       <div
         ref={ref}
         className="flex flex-col md:flex-row gap-20 relative scroll-m-20"
         style={{ overflowAnchor: "none" }}
       >
-        {!isTabletOrMobile && (
+        {!isTabletOrMobile ? (
           <Filters
             className="self-start sticky top-20 overflow-y-auto"
             filters={category.filters}
           />
+        ) : (
+          <dialog
+            id="mobileFiltersModal"
+            className="ds-modal ds-modal-bottom sm:ds-modal-middle"
+          >
+            <form method="dialog" className="ds-modal-box">
+              <button className="ds-btn ds-btn-sm ds-btn-circle ds-btn-ghost absolute right-2 top-2">
+                <FontAwesomeIcon icon={faClose} size="lg" />
+              </button>
+
+              <Filters filters={category.filters} />
+            </form>
+            <form method="dialog" className="ds-modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
         )}
 
         <div className="w-full flex flex-col gap-y-8">
           {!!paginate && paginate.items.length > 0 && (
-            <div className="w-full flex justify-between items-center gap-x-10">
-              <p className="font-medium text-sm flex gap-1">
+            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-10">
+              <p className="text-sm flex gap-1">
                 <span className="text-gray-400">Mostrando</span>
-                <span className="text-neutral-focus">{`${
+                <span className="font-medium text-neutral-focus">{`${
                   paginate.items.length
                 } de ${paginate?.total || 0}`}</span>
                 <span className="text-gray-400">resultados</span>
               </p>
-              {isTabletOrMobile ? (
-                <>
+
+              <div className="ds-join">
+                <button
+                  className="ds-btn ds-btn-sm ds-btn-ghost ds-join-item"
+                  onClick={() => setTypeView("list")}
+                >
+                  <FontAwesomeIcon
+                    icon={faListUl}
+                    size="lg"
+                    className={classNames({
+                      "text-slate-400": typeView === "grid",
+                      "text-slate-900": typeView === "list",
+                    })}
+                  />
+                </button>
+                <button
+                  className="ds-btn ds-btn-sm ds-btn-ghost ds-join-item"
+                  onClick={() => setTypeView("grid")}
+                >
+                  <FontAwesomeIcon
+                    icon={faGridRound}
+                    size="lg"
+                    className={classNames({
+                      "text-slate-400": typeView === "list",
+                      "text-slate-900": typeView === "grid",
+                    })}
+                  />
+                </button>
+                {isTabletOrMobile && (
                   <button
-                    className="ds-btn ds-btn-circle ds-btn-sm"
+                    className="ds-btn ds-btn-sm ds-btn-ghost ds-join-item"
                     onClick={() => {
                       // @ts-ignore
                       window.mobileFiltersModal.showModal();
                     }}
                   >
-                    <FontAwesomeIcon icon={faFilterList} size="lg" />
+                    <FontAwesomeIcon
+                      icon={faFilterList}
+                      size="lg"
+                      className="text-slate-400"
+                    />
                   </button>
-                  <dialog
-                    id="mobileFiltersModal"
-                    className="ds-modal ds-modal-bottom sm:ds-modal-middle"
-                  >
-                    <form method="dialog" className="ds-modal-box">
-                      <button className="ds-btn ds-btn-sm ds-btn-circle ds-btn-ghost absolute right-2 top-2">
-                        <FontAwesomeIcon icon={faClose} size="lg" />
-                      </button>
-
-                      <Filters filters={category.filters} />
-                    </form>
-                    <form method="dialog" className="ds-modal-backdrop">
-                      <button>close</button>
-                    </form>
-                  </dialog>
-                </>
-              ) : (
-                <PaginationButtons
-                  currentPage={page}
-                  lastPage={paginate?.lastPage || 1}
-                  onChangePage={onChangePage}
-                />
-              )}
+                )}
+              </div>
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 items-center relative">
+          <div
+            className={classNames(
+              "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 relative",
+              {
+                "!grid-cols-1 divide-y [&>*:not(:first-child)]:pt-6":
+                  typeView === "list",
+              }
+            )}
+          >
             {paginate?.items.length === 0 ? (
               <div className="flex flex-col items-center sm:col-span-2 md:col-span-3 xl:col-span-4 gap-6">
                 <FontAwesomeIcon
@@ -240,6 +290,7 @@ export const ProductList = ({ category }: { category: Category }) => {
               paginate?.items.map((prod, idx) => (
                 <ProductCard
                   key={`${category.name}-product-${idx}`}
+                  typeView={typeView}
                   {...prod}
                 />
               ))
@@ -267,9 +318,20 @@ export const ProductList = ({ category }: { category: Category }) => {
   );
 };
 
-const ProductCard = (product: Product) => {
+const ProductCard = ({
+  typeView,
+  ...product
+}: Product & { typeView: TypeView }) => {
+  const { useMobileQuery } = useContext(ResponsiveContext);
+  const isMobile = useMobileQuery();
+
+  const router = useRouter();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [scope, animate] = useAnimate();
+
+  const onClick = () => {
+    router.push(`/categoria/${product.category}/${product.keyword}`);
+  };
 
   useEffect(() => {
     animate(
@@ -279,7 +341,9 @@ const ProductCard = (product: Product) => {
               scope.current,
               {
                 boxShadow:
-                  "0 0 #000000, 0 0 #000000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                  typeView === "grid"
+                    ? "0 0 #000000, 0 0 #000000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
+                    : "none",
               },
               { type: "tween", duration: 0.2 },
             ],
@@ -305,38 +369,128 @@ const ProductCard = (product: Product) => {
   }, [isHovered]);
 
   return (
+    // Card
     <div
       ref={scope}
-      className="ds-card ds-card-compact ds-card-bordered bg-base-100 rounded-md cursor-pointer"
+      className={classNames("ds-card ds-card-compact bg-base-100 h-full", {
+        "!rounded-none": typeView === "list",
+        "ds-card-bordered !rounded-md cursor-pointer": typeView === "grid",
+      })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => typeView === "grid" && onClick()}
     >
-      <figure className="relative aspect-square">
-        {product.images?.slice(0, 2).map((image, idx) => (
-          <img
-            key={`product-${product.name}-img-${idx}`}
-            className={classNames(`prod-card-img-${idx + 1} absolute`, {
-              "z-10 opacity-0": idx === 1,
+      {/* Card content wrapper */}
+      <div
+        className={classNames("w-full h-full relative flex", {
+          "flex-col": typeView === "grid",
+          "items-center": typeView === "list",
+        })}
+      >
+        {/* Product images */}
+        <div
+          className={classNames("relative", {
+            "h-auto w-5/12 md:w-1/4 lg:w-1/4 xl:w-1/6 cursor-pointer":
+              typeView === "list",
+            "w-full": typeView === "grid",
+          })}
+          onClick={() => typeView === "list" && onClick()}
+        >
+          <figure
+            className={classNames("relative aspect-square rounded-t-md", {
+              "rounded-b-md": typeView === "list",
             })}
-            src={image.src}
-            alt={image.alt}
-          />
-        ))}
-      </figure>
+          >
+            {product.images?.slice(0, 2).map((image, idx) => (
+              <img
+                key={`product-${product.name}-img-${idx}`}
+                className={classNames(
+                  `prod-card-img-${idx + 1} absolute h-full w-auto`,
+                  {
+                    "z-10 opacity-0": idx === 1,
+                  }
+                )}
+                src={image.src}
+                alt={image.alt}
+                loading="lazy"
+              />
+            ))}
+          </figure>
+        </div>
 
-      <div className="ds-card-body">
-        <p className="text-base text-center capitalize">{product.name}</p>
-        <div className="ds-card-actions justify-center mt-4">
-          {Object.entries(product.properties).map(([, value], idx) => (
+        {/* Product content */}
+        <div
+          className={classNames("ds-card-body gap-4", {
+            "justify-between": typeView === "grid",
+            "w-5/12 md:w-3/4 lg:3/4 xl:w-5/6 justify-center":
+              typeView === "list",
+          })}
+        >
+          {/* Name */}
+          <span
+            className={classNames("text-base capitalize", {
+              "text-center": typeView === "grid",
+            })}
+          >
+            {product.name}
+          </span>
+
+          <div className="flex gap-6">
+            {/* Description for list view and tablet or higher */}
+            {typeView === "list" && !isMobile && (
+              <div className="shrink">
+                <p className="text-sm font-thin line-clamp-2">
+                  {product.description}
+                </p>
+              </div>
+            )}
+
             <div
-              key={`product-${product.name}-prop-${idx}`}
-              className="ds-badge ds-badge-outline capitalize"
+              className={classNames({
+                "shrink-0 flex flex-col gap-6 justify-between":
+                  typeView === "list",
+                "w-full": typeView === "grid",
+              })}
             >
-              {value}
+              {/* Properties */}
+              <div
+                className={classNames("ds-card-actions", {
+                  "justify-center": typeView === "grid",
+                })}
+              >
+                {Object.entries(product.properties).map(([, value], idx) => (
+                  <div
+                    key={`product-${product.name}-prop-${idx}`}
+                    className="ds-badge ds-badge-outline ds-badge-secondary capitalize"
+                  >
+                    {value}
+                  </div>
+                ))}
+              </div>
+
+              {/* Button to open product (only list view) */}
+              {typeView === "list" && (
+                <button
+                  className="ds-btn ds-btn-sm ds-btn-outline ds-btn-primary w-fit self-end"
+                  onClick={onClick}
+                >
+                  Inspeccionar
+                  <FontAwesomeIcon icon={faEye} />
+                </button>
+              )}
             </div>
-          ))}
+          </div>
         </div>
       </div>
+
+      {/* Product description only for mobile and list view */}
+      {typeView === "list" && isMobile && (
+        <div className="pt-4">
+          <p className="text-sm font-thin line-clamp-2">
+            {product.description}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

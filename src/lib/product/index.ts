@@ -13,6 +13,8 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
   QueryConstraint,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import {
   CategoryProductFilters,
@@ -99,4 +101,24 @@ export const countCategoryProducts = async (
     )
   );
   return snapshot.data().count;
+};
+
+export const loadProduct = async (
+  keyword: string,
+  category: string
+): Promise<Product> => {
+  const docRef = doc(db, "products", keyword).withConverter(ProductConverter);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    throw new Error(`Product ${keyword} not found`);
+  }
+
+  const product = docSnap.data();
+
+  if (product.category !== category.toLocaleLowerCase()) {
+    throw new Error(`Product ${keyword} not found in category ${category}`);
+  }
+
+  return product;
 };
