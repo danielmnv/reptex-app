@@ -1,10 +1,12 @@
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 import {
-  faFacebook,
+  faFacebookF,
   faFacebookMessenger,
   faInstagram,
+  faTelegramPlane,
   faTiktok,
   faWhatsapp,
+  faXTwitter,
   IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
 import { faHandshakeAlt } from "@fortawesome/pro-duotone-svg-icons";
@@ -14,7 +16,7 @@ import { SocialMedia, SocialMediaType } from "../../lib/social-media/dto";
 export const getSocialMediaIcon = (type: SocialMediaType): IconDefinition => {
   switch (type) {
     case "Facebook":
-      return faFacebook;
+      return faFacebookF;
     case "Instagram":
       return faInstagram;
     case "TikTok":
@@ -25,6 +27,10 @@ export const getSocialMediaIcon = (type: SocialMediaType): IconDefinition => {
       return faWhatsapp;
     case "Messenger":
       return faFacebookMessenger;
+    case "Twitter":
+      return faXTwitter;
+    case "Telegram":
+      return faTelegramPlane;
   }
 };
 
