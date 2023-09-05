@@ -8,6 +8,13 @@ import React, {
 } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Loader } from "../app/components/loader";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckCircle,
+  faExclamationCircle,
+} from "@fortawesome/pro-duotone-svg-icons";
 
 export interface ResponsiveContext {
   useMobileQuery: () => boolean;
@@ -42,7 +49,26 @@ export const ResponsiveContextProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <ResponsiveContext.Provider value={responsiveContext}>
-      {isFirstRenderLoading ? <Loader /> : children}
+      {isFirstRenderLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <ToastContainer
+            position="bottom-center"
+            hideProgressBar
+            closeOnClick
+            draggable
+            closeButton={false}
+            theme="colored"
+            icon={({ type }) => (
+              <FontAwesomeIcon
+                icon={type === "success" ? faCheckCircle : faExclamationCircle}
+              />
+            )}
+          />
+          {children}
+        </>
+      )}
     </ResponsiveContext.Provider>
   );
 };

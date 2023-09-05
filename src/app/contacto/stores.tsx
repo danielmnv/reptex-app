@@ -133,7 +133,7 @@ const Stores = ({ stores }: { stores: Store[] }) => {
                       onClick={() => handleActiveMarker(store)}
                     >
                       <div className="flex items-center justify-between">
-                        <h2 className="text-sm md:text-base font-extrabold">
+                        <h2 className="text-sm md:text-base font-medium tracking-wide">
                           {store.name}
                         </h2>
 
@@ -157,7 +157,12 @@ const Stores = ({ stores }: { stores: Store[] }) => {
                         <a
                           href={`tel:${store.phone}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="ds-join-item ds-btn ds-btn-sm ds-btn-primary"
+                          className={classNames(
+                            "ds-btn ds-btn-sm ds-btn-primary",
+                            {
+                              "ds-join-item": !!store.whatsapp,
+                            }
+                          )}
                         >
                           <FontAwesomeIcon icon={faPhone} />
                         </a>

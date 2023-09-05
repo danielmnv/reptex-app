@@ -14,7 +14,7 @@ export type BreadCrumbItem = {
 export const BreadCrumbs = ({ items, className }: BreadCrumbsProps) => {
   return (
     <div className={classNames("text-sm ds-breadcrumbs", className)}>
-      <ul>
+      <ul className="flex-wrap">
         <li className="capitalize font-thin text-gray-400">
           <Link href="/">Inicio</Link>
         </li>

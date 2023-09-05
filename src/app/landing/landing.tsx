@@ -73,7 +73,7 @@ const Banner = () => {
           <div className="flex flex-col gap-y-6 pt-20 lg:pt-0 justify-center lg:justify-start">
             <HeroTitle />
             <HeroDescription />
-            <HeroButtons />
+            {/* <HeroButtons /> */}
           </div>
         </div>
 
@@ -136,13 +136,13 @@ const HeroTitle = () => {
         transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.4s",
       }}
     >
-      <span>Box Office</span>
+      <span>Descubre el Mundo</span>
       <br />
       <motion.span
         className="text-transparent text-5xl md:text-8xl bg-clip-text bg-gradient-to-r from-primary to-sky-300"
         style={{ letterSpacing }}
       >
-        Delivery
+        Reptex
       </motion.span>
     </motion.h1>
   );
@@ -182,7 +182,7 @@ const HeroDescription = () => {
   };
 
   const letters = Array.from(
-    "Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi."
+    "Nos apasiona brindar experiencias excepcionales. Somos tu destino para lo que necesites en el área de confección."
   );
 
   return (

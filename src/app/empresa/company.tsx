@@ -108,12 +108,12 @@ const CompanyObjectives = () => {
   const objectives = [
     {
       title: "Misión",
-      desc: "Aliquam feugiat lorem nec velit commodo, nec fringilla ante consequat.",
+      desc: "Ser el socio de confianza de diseñadores, fabricantes y emprendedores textiles, ofreciendo una amplia gama de productos textiles de alta calidad y brindando un servicio excepcional.",
       icon: faThoughtBubble,
     },
     {
       title: "Visión",
-      desc: "Integer ultricies nibh lobortis, pharetra diam non, faucibus purus.",
+      desc: "Visualizamos un futuro en el que Reptex sea reconocida como un líder indiscutible en la representación de textiles a nivel nacional e internacional.",
       icon: faEyeLowVision,
     },
   ];

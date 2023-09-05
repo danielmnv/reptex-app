@@ -215,7 +215,7 @@ const FilterCheckbox = ({
           <label className="ds-label cursor-pointer !justify-start !items-center gap-x-2">
             <input
               type="checkbox"
-              className="ds-checkbox ds-checkbox-xs ds-checkbox-primary"
+              className="ds-checkbox ds-checkbox-xs ds-checkbox-secondary"
               checked={selected[value]?.selected || false}
               onChange={() =>
                 setSelected((prev) => ({
