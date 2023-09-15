@@ -2,8 +2,8 @@ import React from "react";
 import { Company } from "./company";
 
 export const metadata = {
-  title: "Empresa",
-  description: "Empresa",
+  title: "Empresa | Reptex",
+  description: "Acerca de nosotros.",
   icons: {
     icon: "/favicon.ico",
   },

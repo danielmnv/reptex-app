@@ -11,18 +11,18 @@ import { TopCard } from "../components/top-card";
 export const Purposes = () => {
   const functionalities = [
     {
-      title: "Vestibulum pretium libero",
-      desc: "Aliquam feugiat lorem nec velit commodo, nec fringilla ante consequat.",
+      title: "Colaboramos con los Mejores",
+      desc: "Trabajamos en estrecha colaboración con algunas de las marcas textiles más destacadas a nivel internacional.",
       icon: faWandMagicSparkles,
     },
     {
-      title: "Sed fringilla ante vel",
-      desc: "Integer ultricies nibh lobortis, pharetra diam non, faucibus purus.",
+      title: " Calidad y Confianza",
+      desc: "La calidad es nuestra máxima prioridad. Trabajamos con marcas reconocidas y estamos comprometidos con la entrega de productos textiles que cumplan con los estándares más exigentes.",
       icon: faTruckBolt,
     },
     {
-      title: "Provident cupiditate",
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis voluptatem nam ut a? Modi velit.",
+      title: "Innovación Constante",
+      desc: "Mantenemos un dedo en el pulso de la industria textil, incorporando nuevas tendencias y tecnologías a nuestro catálogo para brindar a nuestros clientes oportunidades de vanguardia.",
       icon: faHandHoldingHeart,
     },
   ];
@@ -30,9 +30,9 @@ export const Purposes = () => {
   return (
     <Section
       className="bg-gradient-to-b from-base-100 to-[#f7f7f7] rounded-tl-[100px]"
-      preTitle={<h2 className="text-xl text-center">What we do</h2>}
-      title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat at arcu vitae sodales."
-      text="Mauris dapibus lacus enim, quis suscipit lacus scelerisque eget. Cras quis molestie magna, in tempor justo. Nunc et orci quis nibh ornare maximus. Aliquam volutpat facilisis dictum. Suspendisse tellus nulla."
+      preTitle={<h2 className="text-xl text-center">Qué Hacemos</h2>}
+      title="Nos enorgullece ser líderes en el apasionante mundo de las representaciones textiles."
+      text="Nuestra misión es conectar y brindar valor tanto a los diseñadores y fabricantes de textiles como a nuestros clientes, creando un puente entre la creatividad y la calidad."
     >
       <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 gap-y-10 md:gap-x-6">
         {functionalities.map((functionality, index) => (

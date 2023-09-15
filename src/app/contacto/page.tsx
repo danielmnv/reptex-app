@@ -4,8 +4,8 @@ import { loadStores } from "../../lib/stores";
 import Stores from "./stores";
 
 export const metadata = {
-  title: "Contacto",
-  description: "Contacto",
+  title: "Contacto | Reptex",
+  description: "Medios de comunicación por los que puedas contactarnos.",
   icons: {
     icon: "/favicon.ico",
   },

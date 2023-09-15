@@ -59,7 +59,6 @@ const ProductImages = ({ images }: { images: ProductImage[] }) => {
 
     const resizeObserver = new ResizeObserver(() => {
       const width = containerImageReef.current?.clientWidth ?? 0;
-      console.log(width);
       setContainerImageSizes([width, width]);
     });
 
@@ -123,13 +122,16 @@ const ProductImages = ({ images }: { images: ProductImage[] }) => {
 };
 
 const ProductDetails = ({ name, description, category }: Product) => {
+  const shareTitle = `Checa este producto de Reptex: ${name}.`;
+  const hashTags = ["reptex", category];
+
   return (
     <div className="grow flex flex-col gap-6">
       <h1 className="text-xl md:text-2xl xl:text-3xl font-light capitalize">
         {name}
       </h1>
 
-      <p className="text-sm xl:text-base font-light text-justify">
+      <p className="text-sm xl:text-base font-light text-justify whitespace-pre-wrap">
         {description}
       </p>
 
@@ -138,19 +140,31 @@ const ProductDetails = ({ name, description, category }: Product) => {
       </div>
 
       <div className="flex gap-2">
-        <FacebookShareButton url={window.location.href}>
+        <FacebookShareButton
+          url={window.location.href}
+          quote={shareTitle}
+          hashtag={hashTags[0]}
+        >
           <ShareButton icon="Facebook" />
         </FacebookShareButton>
 
-        <TwitterShareButton url={window.location.href} title={name}>
+        <TwitterShareButton
+          url={window.location.href}
+          title={shareTitle}
+          hashtags={hashTags}
+        >
           <ShareButton icon="Twitter" />
         </TwitterShareButton>
 
-        <WhatsappShareButton url={window.location.href}>
+        <WhatsappShareButton
+          url={window.location.href}
+          title={shareTitle}
+          separator={"\n"}
+        >
           <ShareButton icon="WhatsApp" />
         </WhatsappShareButton>
 
-        <TelegramShareButton url={window.location.href} title={name}>
+        <TelegramShareButton url={window.location.href} title={shareTitle}>
           <ShareButton icon="Telegram" />
         </TelegramShareButton>
       </div>
@@ -160,53 +174,60 @@ const ProductDetails = ({ name, description, category }: Product) => {
 
 const ShareButton = ({ icon }: { icon: SocialMediaType }) => {
   return (
-    <button className="ds-btn ds-btn-circle ds-btn-sm border-gray-300 ds-btn-outline text-gray-400 hover:border-primary hover:text-primary hover:bg-transparent">
+    <div className="ds-btn ds-btn-circle ds-btn-sm border-gray-300 ds-btn-outline text-gray-400 hover:border-primary hover:text-primary hover:bg-transparent">
       <FontAwesomeIcon icon={getSocialMediaIcon(icon)} />
-    </button>
+    </div>
   );
 };
 
 const ProductAdditionalInfo = ({ product }: { product: Product }) => {
   const propertyName = Object.keys(product.properties);
   const propertyValue = Object.values(product.properties);
+  const hasProps = propertyName.length > 0;
+  const hasFile = !!product.file;
 
-  const [tab, setTab] = useState<"info" | "file">("info");
+  const [tab, setTab] = useState<"info" | "file">(hasProps ? "info" : "file");
 
   const handleDownloadFile = () => {
     console.log("download file");
   };
 
-  return (
+  return hasProps || hasFile ? (
     <div className="flex flex-col items-center">
       <div className="ds-tabs">
-        <a
-          className={classNames(
-            "ds-tab transition-all ease-in-out duration-150 hover:text-primary",
-            {
-              "ds-tab-bordered ds-tab-active text-primary !border-primary":
-                tab === "info",
-            }
-          )}
-          onClick={() => setTab("info")}
-        >
-          Información
-        </a>
-        <a
-          className={classNames(
-            "ds-tab transition-all ease-in-out duration-150 hover:text-primary",
-            {
-              "ds-tab-bordered ds-tab-active text-primary !border-primary":
-                tab === "file",
-            }
-          )}
-          onClick={() => setTab("file")}
-        >
-          Ficha Técnica
-        </a>
+        {hasProps && (
+          <a
+            className={classNames(
+              "ds-tab transition-all ease-in-out duration-150 hover:text-primary",
+              {
+                "ds-tab-bordered ds-tab-active text-primary !border-primary":
+                  tab === "info",
+              }
+            )}
+            onClick={() => setTab("info")}
+          >
+            Información
+          </a>
+        )}
+
+        {hasFile && (
+          <a
+            className={classNames(
+              "ds-tab transition-all ease-in-out duration-150 hover:text-primary",
+              {
+                "ds-tab-bordered ds-tab-active text-primary !border-primary":
+                  tab === "file",
+              }
+            )}
+            onClick={() => setTab("file")}
+          >
+            Ficha Técnica
+          </a>
+        )}
       </div>
 
       <div className="border rounded-md w-full">
-        {tab === "info" && (
+        {tab === "info" && hasProps && (
           <div className="overflow-x-auto py-2">
             <table className="ds-table">
               {/* head */}
@@ -222,7 +243,7 @@ const ProductAdditionalInfo = ({ product }: { product: Product }) => {
           </div>
         )}
 
-        {tab === "file" && (
+        {tab === "file" && hasFile && (
           <div className="p-4 flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <FontAwesomeIcon
@@ -244,5 +265,5 @@ const ProductAdditionalInfo = ({ product }: { product: Product }) => {
         )}
       </div>
     </div>
-  );
+  ) : null;
 };

@@ -7,6 +7,7 @@ module.exports = {
   ],
   theme: {
     container: {
+      maxWidth: "100vw",
       center: true,
       padding: {
         DEFAULT: "1rem",

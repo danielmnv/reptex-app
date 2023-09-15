@@ -26,8 +26,8 @@ export const Brands = () => {
   return (
     <div ref={ref}>
       <Section
-        title="Brands"
-        text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia dolores laudantium, repudiandae, accusamus, iusto a eius facilis culpa sunt itaque repellat. Ipsam cupiditate, accusantium corrupti modi dolorem perferendis voluptates illo."
+        title="Nuestras Marcas de Confianza"
+        text="Nos enorgullece ofrecer una cuidada selección de productos de las marcas más confiables y reconocidas en la industria. Valoramos la calidad, la innovación y la satisfacción del cliente, y estas marcas han demostrado su compromiso con esos mismos principios."
       >
         <div className="w-full flex items-center justify-center pt-10">
           <div className="grid max-w-sm grid-cols-1 gap-4 md:px-10 sm:max-w-none sm:grid-cols-3 sm:gap-12 xl:px-6 sm:[&>*:nth-child(3n-2)]:-translate-y-[calc(50%+3rem/2)] sm:[&>*:nth-child(3n)]:-translate-y-[calc(50%+3rem/2)]">

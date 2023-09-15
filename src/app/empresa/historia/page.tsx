@@ -2,8 +2,8 @@ import React from "react";
 import { History } from "./history";
 
 export const metadata = {
-  title: "Historia",
-  description: "Historia",
+  title: "Historia | Reptex",
+  description: "Descubre la grandiosa historia de la empresa Reptex.",
   icons: {
     icon: "/favicon.ico",
   },

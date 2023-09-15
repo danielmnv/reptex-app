@@ -435,11 +435,11 @@ const ProductCard = ({
             {product.name}
           </span>
 
-          <div className="flex gap-6">
+          <div className="flex justify-between gap-6">
             {/* Description for list view and tablet or higher */}
             {typeView === "list" && !isMobile && (
               <div className="shrink">
-                <p className="text-sm font-thin line-clamp-2">
+                <p className="text-sm font-thin line-clamp-2 whitespace-pre-wrap">
                   {product.description}
                 </p>
               </div>
@@ -461,7 +461,7 @@ const ProductCard = ({
                 {Object.entries(product.properties).map(([, value], idx) => (
                   <div
                     key={`product-${product.name}-prop-${idx}`}
-                    className="ds-badge ds-badge-outline ds-badge-secondary capitalize"
+                    className="ds-badge ds-badge-primary ds-badge-lg capitalize"
                   >
                     {value}
                   </div>
@@ -471,7 +471,7 @@ const ProductCard = ({
               {/* Button to open product (only list view) */}
               {typeView === "list" && (
                 <button
-                  className="ds-btn ds-btn-sm ds-btn-outline ds-btn-primary w-fit self-end"
+                  className="ds-btn ds-btn-sm ds-btn-outline ds-btn-neutral w-fit self-end"
                   onClick={onClick}
                 >
                   Inspeccionar
@@ -486,7 +486,7 @@ const ProductCard = ({
       {/* Product description only for mobile and list view */}
       {typeView === "list" && isMobile && (
         <div className="pt-4">
-          <p className="text-sm font-thin line-clamp-2">
+          <p className="text-sm font-thin line-clamp-2 whitespace-pre-wrap">
             {product.description}
           </p>
         </div>

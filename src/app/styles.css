@@ -21,6 +21,21 @@ a {
   box-sizing: border-box;
 }
 
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+.Toastify__toast-theme--colored {
+  @apply !rounded-xl !min-h-min !p-1;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply !bg-success !text-success-content;
+}
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply !bg-error !text-error-content;
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

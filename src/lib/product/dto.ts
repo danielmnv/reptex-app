@@ -38,6 +38,7 @@ export type Product = {
   category: string;
   properties: Record<string, string | number>;
   images: ProductImage[];
+  file?: string;
 };
 
 export type PaginatedCategoryProducts = {

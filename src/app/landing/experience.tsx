@@ -13,18 +13,16 @@ export const Experience = () => {
   return (
     <GridSection
       className="bg-primary rounded-tr-[100px] text-base-100"
-      preTitle={
-        <h4 className="text-xl uppercase font-semibold">Duis at quam</h4>
-      }
-      title="Morbi eu imperdiet quam vestibulum"
+      preTitle={<h4 className="text-xl uppercase font-semibold">Nosotros</h4>}
+      title="Nuestra Experiencia en el Mundo Textil"
       titleClass="text-slate-300"
-      text="Donec elit enim, fermentum non ornare scelerisque, mattis non justo. Curabitur mattis, sapien id pretium faucibus, nulla elit dictum lorem, eu venenatis sapien mauris eget."
+      text="LLevamos 20 años siendo protagonistas en el emocionante mundo de la representación de textiles. Durante este tiempo, hemos acumulado un conocimiento profundo y una experiencia invaluable en la industria."
       extra={
         <Link
           href="/empresa"
           className="ds-btn ds-btn-neutral ds-btn-block md:ds-btn-wide"
         >
-          Curabitur vitae
+          Más sobre nosotros
         </Link>
       }
     >
